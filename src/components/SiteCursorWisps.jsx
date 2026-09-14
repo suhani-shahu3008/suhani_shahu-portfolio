@@ -62,7 +62,7 @@ export default function SiteCursorWisps() {
     g.setAttribute('aA', new THREE.BufferAttribute(new Float32Array(N), 1))
     g.setAttribute('aS', new THREE.BufferAttribute(new Float32Array(N), 1))
     const pts = new THREE.Points(g, new THREE.ShaderMaterial({
-      uniforms: { uTex: { value: texture }, uPx: { value: vpH() } },
+      uniforms: { uTex: { value: texture }, uPx: { value: vpH() * renderer.getPixelRatio() } },
       transparent: true, blending: THREE.AdditiveBlending,
       depthWrite: false, depthTest: false, fog: false,
       vertexShader:
@@ -128,7 +128,7 @@ export default function SiteCursorWisps() {
         w.max = (weak ? 2.1 : 1.45) + Math.random() * 1.3
         w.vx = -Math.cos(a) * 0.09 + (Math.random() - 0.5) * 0.38
         w.vy = -Math.sin(a) * 0.09 + (Math.random() - 0.5) * 0.32 + 0.02
-        w.sz = (weak ? 0.018 : 0.024) + Math.random() * 0.026
+        w.sz = (weak ? 0.024 : 0.032) + Math.random() * 0.034
         w.ph = Math.random() * Math.PI * 2
       }
 
@@ -168,7 +168,7 @@ export default function SiteCursorWisps() {
       camera.aspect = vpW() / vpH()
       camera.updateProjectionMatrix()
       renderer.setSize(vpW(), vpH())
-      pts.material.uniforms.uPx.value = vpH()
+      pts.material.uniforms.uPx.value = vpH() * renderer.getPixelRatio()
     }
     window.addEventListener('resize', resize, { passive: true })
 

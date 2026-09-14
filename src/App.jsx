@@ -6,7 +6,6 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import SiteCursor from './components/SiteCursor'
 import SiteCursorWisps from './components/SiteCursorWisps'
-import SiteAmbientEmbers from './components/SiteAmbientEmbers'
 
 export default function App() {
   const { pathname } = useLocation()
@@ -14,8 +13,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      {/* Home runs its own cursor, wisps, and embers inside the Kage iframe */}
-      {!isHome && <SiteAmbientEmbers />}
+      {/* Home runs its own cursor and wisps inside the Kage iframe */}
       {!isHome && <SiteCursor />}
       {!isHome && <SiteCursorWisps />}
       <main className="app-main">
