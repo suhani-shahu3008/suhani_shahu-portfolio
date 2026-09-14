@@ -126,15 +126,62 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 }
 #pre.done{ opacity:0; visibility:hidden; pointer-events:none; }
 .pre-in{ width:min(420px,74vw); text-align:center; }
-.pre-mark{ margin:0 auto 26px; width:44px; height:44px; opacity:.9; }
-.pre-mark svg{ width:100%; height:100%; display:block; }
-.pre-jp{ font-size:12px; letter-spacing:.5em; color:var(--bone-dim); margin-bottom:20px; }
-.pre-bar{ position:relative; height:1px; background:rgba(223,231,224,.14); overflow:hidden; }
-.pre-bar i{ position:absolute; inset:0 100% 0 0; background:var(--bone); transition:right .35s linear; }
-.pre-meta{ display:flex; justify-content:space-between; margin-top:12px;
+
+@keyframes preRise{ from{ opacity:0; transform:translate3d(0,10px,0); } to{ opacity:1; transform:none; } }
+
+.pre-brand{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  margin-bottom:30px;
+  animation:preRise .7s var(--ease-out) both;
+}
+.pre-dot{
+  position:relative; width:5px; height:5px; border-radius:50%; flex:none;
+  background:var(--vermilion); box-shadow:0 0 10px var(--vermilion);
+}
+.pre-dot::before{
+  content:''; position:absolute; inset:0; border-radius:50%;
+  background:var(--vermilion);
+  animation:dotPing 1.8s cubic-bezier(0,0,.2,1) infinite;
+}
+.pre-name{
   font-family:'JetBrains Mono',ui-monospace,monospace;
-  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
-.pre-meta b{ font-weight:500; color:var(--bone-dim); font-variant-numeric:tabular-nums; }
+  font-size:13px; font-weight:500; letter-spacing:.26em; text-transform:uppercase;
+  color:var(--bone);
+}
+
+.pre-track{
+  animation:preRise .7s var(--ease-out) .12s both;
+}
+.pre-bar{
+  position:relative; height:6px; border-radius:99px; overflow:hidden;
+  background:rgba(223,231,224,.045);
+  border:1px solid rgba(223,231,224,.10);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), inset 0 -6px 10px rgba(0,0,0,.30);
+}
+.pre-bar i{
+  position:absolute; inset:0 100% 0 0; border-radius:99px;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--vermilion) 78%, white), var(--vermilion));
+  box-shadow:0 0 10px color-mix(in srgb, var(--vermilion) 55%, transparent),
+             0 0 1px color-mix(in srgb, var(--vermilion) 80%, transparent);
+  transition:right .35s linear;
+}
+.pre-meta{ display:flex; justify-content:flex-end; margin-top:10px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
+  font-size:11px; letter-spacing:.06em; color:var(--bone-dim); font-variant-numeric:tabular-nums; }
+.pre-meta b{ font-weight:500; color:var(--bone); }
+
+.pre-caption{
+  margin-top:26px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
+  font-size:10px; letter-spacing:.30em; text-transform:uppercase; color:var(--muted);
+  animation:preRise .7s var(--ease-out) .22s both;
+}
+
+@media (max-width:480px){
+  .pre-name{ font-size:11px; letter-spacing:.2em; }
+  .pre-caption{ font-size:9px; letter-spacing:.22em; }
+}
 
 /* ============================================================= nav */
 .nav{
@@ -1028,17 +1075,15 @@ body[data-layout-footer="b"] .foot-grid > div:nth-child(n+3){
 <!-- ============================================================ preloader -->
 <div id="pre">
   <div class="pre-in">
-    <div class="pre-mark">
-      <svg viewBox="0 0 44 44" fill="none" aria-hidden="true">
-        <circle cx="22" cy="24" r="9.5" stroke="#f6b8d1" stroke-width="1.2"/>
-        <path d="M6 12h32M9.5 17h25M22 8v28" stroke="#dfe7e0" stroke-width="1.2"/>
-      </svg>
+    <div class="pre-brand">
+      <span class="pre-dot"></span>
+      <span class="pre-name">Suhani Shahu</span>
     </div>
-    <div class="pre-jp jp">影の道</div>
-    <div class="pre-bar"><i id="pre-fill"></i></div>
-    <div class="pre-meta">
-      <span>Raising the mountain temple</span><b><span id="pre-pct">0</span>%</b>
+    <div class="pre-track">
+      <div class="pre-bar"><i id="pre-fill"></i></div>
+      <div class="pre-meta"><b><span id="pre-pct">0</span>%</b></div>
     </div>
+    <div class="pre-caption">Loading into Suhani Shahu's design space</div>
   </div>
 </div>
 
