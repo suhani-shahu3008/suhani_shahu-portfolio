@@ -5,8 +5,8 @@ import { HomeIcon, LayersIcon, UserIcon, MailIcon } from './icons/Icons'
 const items = [
   { to: '/', label: 'Home', Icon: HomeIcon },
   { to: '/case-studies', label: 'Case Studies', Icon: LayersIcon },
-  { to: '/about', label: 'About Me', Icon: UserIcon },
-  { to: '/contact', label: 'Get in Touch', Icon: MailIcon },
+  { to: '/about-me', label: 'About Me', Icon: UserIcon },
+  { to: '/get-in-touch', label: 'Get in Touch', Icon: MailIcon },
 ]
 
 const COLLAPSED = 80

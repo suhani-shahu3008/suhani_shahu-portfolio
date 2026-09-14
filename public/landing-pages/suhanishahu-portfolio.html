@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kage — Where stillness reveals the unseen</title>
 <meta name="description" content="A five-chapter night walk through a Kyoto mountain temple. Charred cypress, lantern light and a vermilion moon, rendered live in WebGL.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305070a'/%3E%3Ccircle cx='16' cy='17' r='8' fill='%23e0231c'/%3E%3Crect x='4' y='8' width='24' height='2.6' fill='%23dfe7e0'/%3E%3Crect x='7' y='13' width='18' height='2' fill='%23dfe7e0'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305070a'/%3E%3Ccircle cx='16' cy='17' r='8' fill='%23f6b8d1'/%3E%3Crect x='4' y='8' width='24' height='2.6' fill='%23dfe7e0'/%3E%3Crect x='7' y='13' width='18' height='2' fill='%23dfe7e0'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="secret-pathways-assets/fonts.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@1&family=Cormorant+Garamond:ital,wght@1,500;1,600;1,700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================= tokens */
 :root{
@@ -19,7 +22,7 @@
   --line-soft:rgba(223,231,224,.07);
   --vermilion:#e0231c;
   --ember:#ff5a3c;
-  --gold:#c9a24a;
+  --gold:#d1477e;
   --pad:clamp(20px, 3.4vw, 56px);
   --nav-h:84px;
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -30,7 +33,7 @@
 html{ -webkit-text-size-adjust:100%; scroll-behavior:auto; }
 body{
   margin:0; background:var(--ink); color:var(--bone);
-  font-family:'Onest',system-ui,-apple-system,'Helvetica Neue',sans-serif;
+  font-family:'Manrope',system-ui,-apple-system,'Helvetica Neue',sans-serif !important;
   font-weight:300; font-size:16px; line-height:1.6;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;
@@ -59,20 +62,43 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ============================================================= type */
 .eyebrow{
+  font-family:'JetBrains Mono',ui-monospace,monospace;
   font-size:10px; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
   color:var(--bone-dim); text-shadow:0 1px 16px rgba(3,6,8,.9);
 }
-.jp{ font-family:'NotoJP','Onest',sans-serif; font-weight:400; }
+.nav-logo{
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:21px; font-weight:600; letter-spacing:.01em;
+  color:var(--bone); margin-right:auto; text-decoration:none;
+  display:inline-flex;
+  transition:color .32s var(--ease-out);
+}
+.nav-logo:hover{ color:var(--vermilion,#f6b8d1); }
+.nav-logo .lt{
+  display:inline-block; opacity:0; transform:translateY(14px) rotate(-3deg);
+  animation:navLogoIn .55s var(--ease-out) forwards;
+  animation-delay:calc(var(--i) * 45ms + 450ms);
+}
+@keyframes navLogoIn{ to{ opacity:1; transform:none; } }
+.jp{ font-family:'NotoJP','Manrope',sans-serif; font-weight:400; }
+/* the runtime typography bridge (driven by KageLandingPage's headingFont/
+   bodyFont props) re-appends its own <style> last in <head> on every load,
+   so a plain rule here can't out-cascade it — !important is the only way
+   to keep the whole page on Manrope, since "manrope" isn't one of that
+   system's three offered alternative fonts */
+h1:not(.jp), h2:not(.jp), h3:not(.jp), .display:not(.jp){
+  font-family:'Manrope',system-ui,-apple-system,'Helvetica Neue',sans-serif !important;
+}
 h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .display{
   text-transform:uppercase; line-height:1.055; letter-spacing:-.012em;
   font-weight:400; text-shadow:0 2px 34px rgba(3,6,8,.72);
 }
-.h-hero{ font-size:clamp(26px,3.05vw,46px); }
+.h-hero{ font-size:clamp(22px,2.3vw,34px) !important; line-height:1.12; }
 .h-sec{ font-size:clamp(30px,4.0vw,60px); }
 .body-lg{ font-size:clamp(14px,1.02vw,17px); line-height:1.72; color:#b4bfb7; font-weight:300; text-shadow:0 1px 20px rgba(3,6,8,.88); }
 .body{ font-size:14px; line-height:1.68; color:#9aa5a0; font-weight:300; text-shadow:0 1px 18px rgba(3,6,8,.85); }
-.num{ font-size:clamp(26px,2.5vw,36px); font-weight:300; letter-spacing:-.02em; color:var(--bone); font-variant-numeric:tabular-nums; }
+.num{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:clamp(26px,2.5vw,36px); font-weight:300; letter-spacing:-.02em; color:var(--bone); font-variant-numeric:tabular-nums; }
 
 /* ============================================================= reveal */
 [data-rv]{ opacity:0; }
@@ -106,6 +132,7 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .pre-bar{ position:relative; height:1px; background:rgba(223,231,224,.14); overflow:hidden; }
 .pre-bar i{ position:absolute; inset:0 100% 0 0; background:var(--bone); transition:right .35s linear; }
 .pre-meta{ display:flex; justify-content:space-between; margin-top:12px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
   font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
 .pre-meta b{ font-weight:500; color:var(--bone-dim); font-variant-numeric:tabular-nums; }
 
@@ -143,23 +170,77 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .brand-tx{ display:flex; flex-direction:column; line-height:1; gap:3px; }
 .brand-tx b{ font-size:12px; font-weight:500; letter-spacing:.26em; }
 .brand-tx i{ font-style:normal; font-size:8px; letter-spacing:.34em; color:var(--muted); }
-.nav-links{ display:flex; gap:clamp(18px,2.6vw,46px); margin-left:auto; }
+.nav-links{ display:flex; align-items:center; gap:clamp(18px,2.6vw,46px); margin-left:auto; margin-top:16px; }
 .nav-link{
   position:relative; font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
   color:var(--bone-dim); display:block; height:15px; line-height:15px; overflow:hidden;
 }
 .nav-link span{ display:block; height:15px; line-height:15px; transition:transform .55s var(--ease-out), color .3s; }
 .nav-link .alt{ position:absolute; inset:0; transform:translate3d(0,100%,0); color:var(--bone); letter-spacing:.32em; }
-.nav-link:hover span{ transform:translate3d(0,-100%,0); }
-.nav-link:hover .alt{ transform:none; }
+.nav-link::before{
+  content:''; position:absolute; left:0; bottom:0; width:100%; height:1px;
+  background:var(--vermilion); transform-origin:left; transform:scaleX(0);
+  transition:transform .45s var(--ease-out);
+}
+.nav-link:hover::before{ transform:scaleX(1); }
+.nav-link:hover span:not(.alt){ color:var(--bone); }
 .nav-link.on{ color:var(--bone); }
 .nav-link.on::after{ content:''; position:absolute; left:0; bottom:0; width:100%; height:1px; background:var(--vermilion); }
+.nav-cta::before{ display:none; }
+
+/* Get in touch — stays a restrained transparent-outline liquid-glass pill
+   at all times (no fill swap on hover). Only the arrow moves: it flies from
+   its resting spot on the right to the left of the label, and a small pink
+   pill badge — smaller than the button itself — fades in behind it once
+   it lands there. */
+.nav-cta{
+  display:inline-flex; align-items:center; gap:10px;
+  height:auto; overflow:visible; text-transform:none; letter-spacing:0;
+  font-weight:600; font-size:14px; color:var(--bone);
+  padding:11px 20px; border-radius:999px;
+  background:rgba(246,184,209,.06);
+  border:2px solid rgba(246,184,209,.28);
+  backdrop-filter:blur(16px) saturate(170%);
+  -webkit-backdrop-filter:blur(16px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1), background .32s var(--ease-out), border-color .32s var(--ease-out), box-shadow .32s var(--ease-out);
+}
+.nav-cta > span:not(.nav-cta__icon){ display:block; height:auto; line-height:1.2; transform:none !important; color:inherit; }
+.nav-cta:hover{
+  background:rgba(246,184,209,.12);
+  border-color:rgba(246,184,209,.7);
+  box-shadow:0 0 0 1px rgba(246,184,209,.15), 0 8px 24px rgba(246,184,209,.2), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav-cta:active{ transform:scale(.94); transition-duration:.12s; }
+.nav-cta.on::after{ display:none; }
+.nav-cta .nav-cta__icon{
+  position:relative;
+  width:16px; height:16px; flex:0 0 auto; display:grid; place-items:center;
+  color:var(--bone);
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+  z-index:1;
+}
+.nav-cta .nav-cta__icon svg{ width:16px; height:16px; display:block; position:relative; z-index:1; }
+.nav-cta .nav-cta__icon::before{
+  content:''; position:absolute; inset:-8px; z-index:0;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff8fb5,#ff4f9a);
+  box-shadow:0 4px 12px rgba(255,79,154,.5);
+  opacity:0; transform:scale(.5);
+  transition:opacity .35s var(--ease-out), transform .35s var(--ease-out);
+}
+.nav-cta:hover .nav-cta__icon{ transform:translateX(-136px); }
+.nav-cta:hover .nav-cta__icon::before{ opacity:1; transform:scale(1); }
 .nav-burger{ margin-left:clamp(18px,2.6vw,42px); width:26px; height:16px; position:relative; flex:0 0 auto; }
 .nav-burger i{ position:absolute; right:0; height:1.5px; background:var(--bone); transition:width .45s var(--ease-out), transform .45s var(--ease-out); }
 .nav-burger i:nth-child(1){ top:4px; width:26px; }
 .nav-burger i:nth-child(2){ top:11px; width:17px; }
 .nav-burger:hover i:nth-child(2){ width:26px; }
 .nav-burger:hover i:nth-child(1){ width:17px; }
+.nav-burger{ visibility:hidden; pointer-events:none; }
+@media (min-width:821px){
+  .nav-burger{ display:none; }
+}
 
 /* ============================================================= hero */
 .hero{ position:relative; min-height:100svh; padding:0 var(--pad); display:flex; flex-direction:column; }
@@ -167,12 +248,22 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
   background:linear-gradient(rgba(3,6,9,.72), rgba(3,6,9,.34) 46%, transparent); }
 .hero-top{ padding-top:calc(var(--nav-h) + clamp(12px,2.6vh,34px)); max-width:min(560px,46vw); position:relative; z-index:2; }
 .hero-top .eyebrow{ display:flex; align-items:center; gap:10px; margin-bottom:20px; }
-.hero-top .eyebrow .dot{ width:5px; height:5px; border-radius:50%; background:var(--vermilion); box-shadow:0 0 10px var(--vermilion); }
+.hero-top .eyebrow .dot{ position:relative; width:5px; height:5px; border-radius:50%; background:var(--vermilion); box-shadow:0 0 10px var(--vermilion); }
+.hero-top .eyebrow .dot::before{
+  content:''; position:absolute; inset:0; border-radius:50%;
+  background:var(--vermilion);
+  animation:dotPing 1.8s cubic-bezier(0,0,.2,1) infinite;
+}
+@keyframes dotPing{
+  0%{ transform:scale(1); opacity:.7; }
+  100%{ transform:scale(4.2); opacity:0; }
+}
 .hero h1{ margin-bottom:18px; }
-.hero-sub{ max-width:322px; text-shadow:0 1px 26px rgba(3,6,8,.95); }
+.hero-sub{ max-width:480px; font-size:13px !important; text-shadow:0 1px 26px rgba(3,6,8,.95); }
 .hero-spacer{ flex:1 1 auto; min-height:clamp(140px,26vh,300px); }
 .hero-foot{ padding-bottom:clamp(22px,4.2vh,42px); position:relative; z-index:2; }
 .hero-cue{ display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-bottom:14px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
   font-size:9px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
 .hero-cue .track{ width:54px; height:1px; background:var(--line); position:relative; overflow:hidden; }
 .hero-cue .track i{ position:absolute; inset:0; background:var(--bone); transform-origin:left;
@@ -184,7 +275,7 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .chip{ display:flex; gap:14px; align-items:flex-start; cursor:pointer; }
 .chip .num{ line-height:1; flex:0 0 auto; transition:color .4s, transform .5s var(--ease-out); }
 .chip .tx{ min-width:0; padding-top:3px; }
-.chip b{ display:block; font-size:10px; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+.chip b{ display:block; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10px; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
   color:var(--bone-dim); margin-bottom:6px; transition:color .4s;
   text-shadow:0 1px 16px rgba(3,6,8,.9); }
 .chip p{ margin:0; font-size:11px; line-height:1.5; color:#7d8781; max-width:22ch;
@@ -214,14 +305,14 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .peek:hover .peek-play svg{ transform:scale(1.14); }
 .peek-cap{ display:flex; align-items:baseline; gap:9px; margin-top:9px; }
 .peek-cap b{ font-size:11px; font-weight:400; letter-spacing:.24em; color:var(--bone-dim); }
-.peek-cap i{ font-style:normal; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.peek-cap i{ font-family:'JetBrains Mono',ui-monospace,monospace; font-style:normal; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
 @media (max-width:820px){ .peek{ display:none; } }
 
 .hero-side{
   position:absolute; z-index:2; right:var(--pad); top:50%; transform:translateY(-50%);
   display:flex; flex-direction:column; align-items:center; gap:14px; pointer-events:none;
 }
-.hero-side .v{ writing-mode:vertical-rl; font-size:13px; letter-spacing:.62em; color:rgba(223,231,224,.5); }
+.hero-side .v{ writing-mode:vertical-rl; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; letter-spacing:.62em; color:rgba(223,231,224,.5); }
 @keyframes cue{ 0%{transform:scaleX(0)} 42%{transform:scaleX(1)} 100%{transform:scaleX(1) translateX(100%)} }
 
 /* ============================================================= sections */
@@ -241,11 +332,15 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 #pathways::before{ background:radial-gradient(108% 64% at 50% 50%, rgba(4,7,10,.70), rgba(4,7,10,.44) 50%, rgba(4,7,10,0)); }
 #eternity::before{ background:radial-gradient(82% 58% at 50% 46%, rgba(4,7,10,.26), rgba(4,7,10,.66) 56%, rgba(4,7,10,.90) 82%, rgba(4,7,10,0)); }
 .foot::before{
+  /* glass panel, not a solid scrim — the garden foreground and the scene
+     behind it stay visible through the tint, per the site's glass-over-3D
+     treatment for UI built on top of the 3D experience */
   content:''; position:absolute; inset:0; z-index:-1; pointer-events:none;
-  background:linear-gradient(rgba(4,7,10,.55), rgba(4,7,10,.94) 40%, rgba(4,7,10,.98));
+  background:linear-gradient(180deg, rgba(20,9,17,.4), rgba(9,6,10,.6) 55%, rgba(7,5,8,.72));
+  backdrop-filter:blur(26px) saturate(140%); -webkit-backdrop-filter:blur(26px) saturate(140%);
 }
 .sec-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:clamp(30px,5vh,66px); }
-.sec-head .k{ font-size:10px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); }
+.sec-head .k{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); }
 .sec-head .k b{ color:var(--vermilion); font-weight:500; }
 .rule{ flex:1 1 auto; height:1px; background:var(--line-soft); }
 
@@ -253,9 +348,10 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .gate-grid{ display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,1fr); gap:clamp(28px,5vw,90px); align-items:start; }
 .gate-grid h2{ max-width:11ch; }
 .gate-copy{ padding-top:6px; }
-.gate-copy .lead{ font-size:clamp(15px,1.16vw,19px); line-height:1.66; color:#c2cdc5; text-shadow:0 1px 20px rgba(3,6,8,.9); }
+.gate-copy .lead{ font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(17px,1.3vw,21px); line-height:1.66; color:#c2cdc5; text-shadow:0 1px 20px rgba(3,6,8,.9); }
 .gate-copy .lead + p{ margin-top:20px; }
 .arrowlink{ display:inline-flex; align-items:center; gap:12px; margin-top:34px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
   font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:var(--bone); }
 .arrowlink .ar{ width:34px; height:34px; border:1px solid var(--line); border-radius:50%;
   display:grid; place-items:center; transition:background .45s var(--ease), border-color .45s, transform .5s var(--ease-out); }
@@ -265,7 +361,7 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .arrowlink:hover .ar svg path{ stroke:#05070a; }
 .gate-stats{ display:flex; gap:clamp(24px,4vw,62px); margin-top:clamp(46px,8vh,96px); border-top:1px solid var(--line-soft); padding-top:24px; }
 .gate-stats div b{ display:block; font-size:clamp(22px,2.1vw,32px); font-weight:300; letter-spacing:-.02em; }
-.gate-stats div span{ font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.gate-stats div span{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
 
 /* — chapter II: pathways cards */
 .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(10px,1.4vw,22px); align-items:start; }
@@ -379,12 +475,13 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .no-webgl .sec::before, .no-webgl #pathways::before, .no-webgl #eternity::before{ background:none; }
 .card-lab{ position:absolute; left:16px; right:16px; bottom:14px; z-index:2;
   display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
-.card-lab b{ font-size:clamp(13px,1.15vw,17px); font-weight:400; letter-spacing:.02em; text-transform:uppercase; }
+.card-lab b{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:clamp(13px,1.15vw,17px); font-weight:400; letter-spacing:.02em; text-transform:uppercase; }
 .card-lab .jp{ font-size:11px; letter-spacing:.3em; color:rgba(223,231,224,.62); }
 .card-ar{ position:absolute; top:14px; right:14px; z-index:2; width:26px; height:26px;
   opacity:0; transform:translate3d(-4px,4px,0); transition:.5s var(--ease-out); }
 .card:hover .card-ar{ opacity:1; transform:none; }
 .card-meta{ display:flex; justify-content:space-between; margin-top:12px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
   font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
 
 /* — chapter III: curriculum */
@@ -399,16 +496,16 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
   cursor:pointer; transition:padding .5s var(--ease-out);
 }
 .les::before{ content:''; position:absolute; left:calc(var(--pad) * -1); right:0; top:0; bottom:0;
-  background:linear-gradient(90deg, rgba(224,35,28,.09), transparent 46%);
+  background:linear-gradient(90deg, rgba(246,184,209,.14), transparent 46%);
   opacity:0; transition:opacity .55s var(--ease); pointer-events:none; }
 .les:hover::before{ opacity:1; }
 .les:hover{ padding-left:clamp(8px,1.2vw,18px); }
-.les .k{ font-size:11px; letter-spacing:.16em; color:var(--muted); font-variant-numeric:tabular-nums; transition:color .4s; }
+.les .k{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:11px; letter-spacing:.16em; color:var(--muted); font-variant-numeric:tabular-nums; transition:color .4s; }
 .les:hover .k{ color:var(--vermilion); }
 .les h3{ font-size:clamp(16px,1.5vw,23px); font-weight:400; letter-spacing:-.005em; }
 .les h3 em{ font-style:normal; font-family:'NotoJP',sans-serif; font-size:.72em; color:var(--muted); margin-left:12px; letter-spacing:.24em; }
 .les p{ margin:0; font-size:13px; line-height:1.6; color:#909b95; text-shadow:0 1px 16px rgba(3,6,8,.92); }
-.les .t{ text-align:right; font-size:11px; letter-spacing:.14em; color:#8b958f; font-variant-numeric:tabular-nums; text-shadow:0 1px 16px rgba(3,6,8,.92); }
+.les .t{ font-family:'JetBrains Mono',ui-monospace,monospace; text-align:right; font-size:11px; letter-spacing:.14em; color:#8b958f; font-variant-numeric:tabular-nums; text-shadow:0 1px 16px rgba(3,6,8,.92); }
 .les .bar{ position:absolute; left:0; bottom:-1px; height:1px; width:100%; background:var(--vermilion);
   transform:scaleX(0); transform-origin:left; transition:transform .7s var(--ease-out); }
 .les:hover .bar{ transform:scaleX(1); }
@@ -433,25 +530,64 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 
 /* — footer */
 .foot{ position:relative; padding:clamp(50px,8vh,96px) var(--pad) clamp(26px,4vh,40px);
-  border-top:1px solid var(--line-soft); }
+  border-top:1px solid rgba(255,255,255,.14); }
 .foot-grid,.foot-base{ position:relative; }
 .foot-grid{ display:grid; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,.6fr)); gap:clamp(22px,4vw,60px); }
-.foot h4{ margin:0 0 16px; font-size:10px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+.foot h4{ margin:0 0 16px; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--bone); }
 .foot ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
 .foot li a{ font-size:13px; color:#8f9a93; transition:color .35s; }
 .foot li a:hover{ color:var(--bone); }
-.foot-brand p{ margin:16px 0 0; max-width:34ch; font-size:13px; color:#79847e; }
+.foot-meta{ margin:0 0 14px; }
+.foot-brand__l1{ margin:0 0 10px; font-family:'Instrument Serif',serif; font-style:italic;
+  font-size:clamp(25px,3vw,40px); line-height:1.3; color:#dbe3dd; }
+.foot-brand__l2{ margin:0; font-size:14px; line-height:1.68; color:#9aa5a0; font-weight:300; max-width:44ch; }
+.foot-closing{ text-align:center; padding:22px var(--pad) 8px; position:relative;
+  font-family:'JetBrains Mono',ui-monospace,monospace; font-size:9px; font-weight:500;
+  letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
+.foot-brand__tag{ display:flex; align-items:center; gap:10px; flex:0 0 auto; white-space:nowrap; }
+.foot-brand__tag .dot{ position:relative; width:5px; height:5px; margin-left:-8px; border-radius:50%; background:var(--vermilion); box-shadow:0 0 10px var(--vermilion); }
+.foot-brand__tag .dot::before{ content:''; position:absolute; inset:0; border-radius:50%; background:var(--vermilion); animation:dotPing 1.8s cubic-bezier(0,0,.2,1) infinite; }
+.foot-socials li a{ display:inline-flex; align-items:center; gap:10px; }
+.foot-socials__mark{ display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px;
+  border-radius:50%; border:1px solid var(--line); flex:0 0 auto; color:var(--bone);
+  transition:border-color .35s, background .35s; }
+.foot-socials__mark svg{ width:12px; height:12px; display:block; }
+.foot-socials li a:hover .foot-socials__mark{ border-color:var(--bone); background:rgba(255,255,255,.08); }
+.foot-socials{ gap:16px; }
+.foot-socials__row{ display:flex; align-items:flex-start; gap:40px; }
+.foot-socials__col{ display:flex; flex-direction:column; gap:9px; }
+.foot-contact li a{ display:inline-flex; align-items:center; gap:10px; }
+.foot-contact__icon{ display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px;
+  border-radius:50%; border:1px solid var(--line); flex:0 0 auto; color:var(--bone-dim);
+  transition:border-color .35s, color .35s; }
+.foot-contact__icon svg{ width:11px; height:11px; display:block; }
+.foot-contact li a:hover .foot-contact__icon{ border-color:var(--bone); color:var(--bone); }
+.foot-socials__arrow{ opacity:.5; transition:opacity .35s, transform .35s; }
+.foot-socials li a:hover .foot-socials__arrow{ opacity:1; transform:translate3d(1px,-1px,0); }
+.foot-contact{ margin-bottom:14px; }
+.foot-contact__note{ margin:14px 0 0; max-width:44ch; font-size:12.5px; line-height:1.65; color:#79847e; }
 .foot-base{ display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;
   margin-top:clamp(38px,6vh,74px); padding-top:20px; border-top:1px solid var(--line-soft);
+  font-family:'JetBrains Mono',ui-monospace,monospace;
   font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
 
 /* ============================================================= progress rail */
 .rail{ position:fixed; right:calc(var(--pad) - 4px); top:50%; transform:translateY(-50%); z-index:45;
   display:flex; flex-direction:column; gap:12px; align-items:center; }
-.rail button{ width:22px; height:10px; display:grid; place-items:center; }
-.rail i{ display:block; width:14px; height:1px; background:rgba(223,231,224,.26); transition:.5s var(--ease-out); }
-.rail button.on i{ width:22px; background:var(--bone); }
-.rail button:hover i{ width:22px; background:var(--bone-dim); }
+.rail button{ position:relative; width:22px; height:10px; display:grid; place-items:center; }
+.rail i{ display:block; width:14px; height:1px; background:var(--bone); opacity:.8; transition:.5s var(--ease-out); }
+.rail button.on i{ width:22px; opacity:1; background:var(--vermilion,#f6b8d1); }
+.rail button:hover i{ width:22px; opacity:.85; }
+.rail button.rail-deco{ cursor:default; }
+.rail-tip{
+  position:absolute; right:100%; top:50%; margin-right:12px; transform:translateY(-50%);
+  font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10px; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase; white-space:nowrap; color:var(--bone);
+  background:rgba(5,7,10,.82); border:1px solid var(--line-soft); border-radius:4px;
+  padding:6px 10px; pointer-events:none;
+  opacity:0; transition:opacity .35s var(--ease-out);
+}
+.rail button:hover .rail-tip{ opacity:1; transition-delay:1.5s; }
 
 /* ============================================================= cursor */
 .cur-dot{ position:fixed; z-index:80; top:0; left:0; width:26px; height:26px; margin:-13px 0 0 -13px;
@@ -473,7 +609,7 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 @media (max-width:820px){
   .nav-links{
     display:flex; position:fixed; top:0; right:0; bottom:0; width:min(84vw,360px);
-    padding:calc(var(--nav-h) + 28px) var(--pad) 34px; flex-direction:column; align-items:flex-start; gap:0;
+    padding:calc(var(--nav-h) + 28px) var(--pad) 34px; margin-top:0; flex-direction:column; align-items:flex-start; gap:0;
     background:rgba(3,6,9,.98); border-left:1px solid var(--line-soft);
     transform:translate3d(100%,0,0); opacity:0; visibility:hidden; pointer-events:none;
     transition:transform .65s var(--ease-out), opacity .4s, visibility 0s linear .65s;
@@ -486,7 +622,7 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
     font-size:17px; line-height:1.2;
   }
   .nav-links .nav-link span{ height:auto; line-height:1.2; transform:none !important; }
-  .nav-links .nav-link .alt{ position:static; margin-top:6px; font-size:10px; color:var(--muted); }
+  .nav-links .nav-link .alt{ display:none; }
   /* The links panel leaves the flow to become the slide-in sheet, taking its
      margin-left:auto with it, so without this the burger sits tucked against
      the wordmark instead of out at the edge where a thumb reaches. */
@@ -623,18 +759,14 @@ body[data-layout-closing="b"] .fin .cta{ grid-column:1; grid-row:3; justify-self
      compact ruled index beneath it. */
 body[data-layout-footer="b"] .foot-grid{ grid-template-columns:repeat(3,1fr); }
 body[data-layout-footer="b"] .foot-brand{
-  grid-column:1 / -1; display:grid; grid-template-columns:70px minmax(0,1fr); align-items:center;
-  padding-bottom:34px; margin-bottom:8px; border-bottom:1px solid var(--line-soft);
-}
-body[data-layout-footer="b"] .foot-brand svg{ width:54px; height:54px; }
-body[data-layout-footer="b"] .foot-brand p{
-  margin:0; max-width:48ch; font-size:clamp(18px,2vw,30px); line-height:1.35; color:var(--bone-dim);
+  /* right padding keeps the tag clear of the fixed progress rail, which sits
+     at this same vertical height for the whole page */
+  grid-column:1 / -1; display:flex; align-items:center; justify-content:space-between; gap:clamp(20px,3vw,48px);
+  padding-bottom:34px; padding-right:clamp(40px,6vw,90px); margin-bottom:8px; border-bottom:1px solid var(--line-soft);
 }
 body[data-layout-footer="b"] .foot-grid > div:nth-child(n+3){
   padding-left:clamp(18px,2.2vw,34px); border-left:1px solid var(--line-soft);
 }
-body[data-layout-footer="b"] .foot-base{ display:grid; grid-template-columns:1fr auto 1fr; }
-body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
 
 /* ================================================= foreground layers (KAGE)
    The transparent PNG library in secret-pathways-assets/foreground/png is
@@ -778,7 +910,6 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
 /* — colophon: one restrained planting along the lower edge, nothing above it */
 [data-fg="foot"] .fg-bush   { left:-6%;  bottom:-110px; width:clamp(230px,28vw,480px); }
 [data-fg="foot"] .fg-grass  { right:-5%; bottom:-98px;  width:clamp(255px,30vw,530px); }
-[data-fg="foot"] .fg-stones { left:36%;  bottom:-104px; width:clamp(190px,22vw,370px); }
 
 @media (max-width:1080px){
   /* the columns have collapsed and the copy has taken the width back, so the
@@ -795,7 +926,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
      of ornament goes and what stays is smaller */
   [data-fg="gate"] .fg-pine, [data-fg="pathways"] .fg-sakura,
   [data-fg="pathways"] .fg-leaves, [data-fg="lessons"] .fg-wall,
-  [data-fg="eternity"] .fg-sakura, [data-fg="foot"] .fg-stones{ display:none; }
+  [data-fg="eternity"] .fg-sakura{ display:none; }
   [data-fg="gate"] .fg-wall     { left:-14%; bottom:-22px; width:min(82vw,440px); }
   [data-fg="gate"] .fg-grass    { left:auto; right:-10%; bottom:-76px; width:min(94vw,530px); }
   [data-fg="pathways"] .fg-lantern{ left:-4%;   bottom:-58px; width:clamp(80px,20vw,128px); }
@@ -864,10 +995,8 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
   body[data-layout-closing="b"] .fin .cta{ margin-top:40px; }
 
   body[data-layout-footer="b"] .foot-grid{ grid-template-columns:1fr; }
-  body[data-layout-footer="b"] .foot-brand{ grid-column:auto; grid-template-columns:minmax(0,1fr); row-gap:16px; }
+  body[data-layout-footer="b"] .foot-brand{ flex-direction:column; align-items:flex-start; gap:16px; padding-right:0; }
   body[data-layout-footer="b"] .foot-grid > div:nth-child(n+3){ padding-left:0; border-left:0; }
-  body[data-layout-footer="b"] .foot-base{ display:flex; }
-  body[data-layout-footer="b"] .foot-base span:last-child{ text-align:left; }
 }
 
 /* On a phone two columns leave the chip's copy about 110px once the numeral
@@ -901,7 +1030,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
   <div class="pre-in">
     <div class="pre-mark">
       <svg viewBox="0 0 44 44" fill="none" aria-hidden="true">
-        <circle cx="22" cy="24" r="9.5" stroke="#e0231c" stroke-width="1.2"/>
+        <circle cx="22" cy="24" r="9.5" stroke="#f6b8d1" stroke-width="1.2"/>
         <path d="M6 12h32M9.5 17h25M22 8v28" stroke="#dfe7e0" stroke-width="1.2"/>
       </svg>
     </div>
@@ -915,10 +1044,17 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
 
 <!-- ============================================================ nav -->
 <header class="nav" id="nav">
+  <a class="nav-logo" href="#gate" data-cursor data-route="/"><span class="lt" style="--i:0">S</span><span class="lt" style="--i:1">u</span><span class="lt" style="--i:2">h</span><span class="lt" style="--i:3">a</span><span class="lt" style="--i:4">n</span><span class="lt" style="--i:5">i</span><span class="lt" style="--i:6">&nbsp;</span><span class="lt" style="--i:7">S</span><span class="lt" style="--i:8">h</span><span class="lt" style="--i:9">a</span><span class="lt" style="--i:10">h</span><span class="lt" style="--i:11">u</span></a>
   <nav class="nav-links" id="navlinks">
     <a class="nav-link" href="#gate" data-cursor data-route="/"><span>Home</span><span class="alt">ホーム</span></a>
     <a class="nav-link" href="#pathways" data-cursor data-route="/case-studies"><span>Case Studies</span><span class="alt">事例</span></a>
-    <a class="nav-link" href="#lessons" data-cursor data-route="/about"><span>About Me</span><span class="alt">私について</span></a>
+    <a class="nav-link" href="#lessons" data-cursor data-route="/about-me"><span>About Me</span><span class="alt">私について</span></a>
+    <a class="nav-link nav-cta" href="#eternity" data-cursor data-route="/get-in-touch">
+      <span>Get in touch</span>
+      <span class="nav-cta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
   </nav>
   <button class="nav-burger" aria-label="Menu" data-cursor><i></i><i></i></button>
 </header>
@@ -928,30 +1064,22 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
 <!-- ============================================================ hero -->
 <section class="hero" id="hero" data-cam="0">
   <div class="hero-top">
-    <div class="eyebrow" data-rv="fade"><span class="dot"></span> Chapter 00 — The Hidden Gate</div>
+    <div class="eyebrow" data-rv="fade"><span class="dot"></span> UI/UX Designer · Brand Designer · XR/Spatial Designer</div>
     <h1 class="display h-hero">
-      <span class="mask-line"><span>Where stillness</span></span>
-      <span class="mask-line"><span>reveals the</span></span>
-      <span class="mask-line"><span>unseen.</span></span>
+      <span class="mask-line"><span>The best UX is invisible,</span></span>
+      <span class="mask-line"><span>built for the user,</span></span>
+      <span class="mask-line"><span>across screens and beyond.</span></span>
     </h1>
-    <p class="hero-sub body" data-rv="up">Enter Kyoto through its quiet thresholds, where ritual,
-      craft, and memory shape the path.</p>
+    <p class="hero-sub body" data-rv="up">I enjoy building design systems,
+      designing user interfaces, and conducting user research while exploring AI for vibe
+      coding. I'm also exploring XR, spatial design, and 3D modeling to design for screens
+      and beyond.</p>
   </div>
 
   <div class="hero-spacer"></div>
 
   <div class="hero-foot">
     <div class="hero-cue" data-rv="fade"><span>Scroll to enter</span><span class="track"><i></i></span></div>
-    <div class="chapters" id="chips">
-      <div class="chip" data-chip="0" data-rv="up" data-cursor><span class="num">01</span>
-        <span class="tx"><b>Thresholds</b><p>Discover the hidden gates that open on to deeper paths.</p></span></div>
-      <div class="chip" data-chip="1" data-rv="up" data-cursor><span class="num">02</span>
-        <span class="tx"><b>Still Gardens</b><p>Witness the courts where silence gently unfolds.</p></span></div>
-      <div class="chip" data-chip="2" data-rv="up" data-cursor><span class="num">03</span>
-        <span class="tx"><b>Sacred Craft</b><p>Embrace the hands and heritage that shape devotion.</p></span></div>
-      <div class="chip" data-chip="3" data-rv="up" data-cursor><span class="num">04</span>
-        <span class="tx"><b>Night Rituals</b><p>Explore the rites that awaken when the day is done.</p></span></div>
-    </div>
   </div>
 
   <div class="word-fb" aria-hidden="true">SUHANI SHAHU</div>
@@ -1139,43 +1267,51 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <span class="fg-el fg-grass" data-fg-in="up">
       <img src="secret-pathways-assets/foreground/png/tall-grass.webp" alt="" width="1717" height="916" loading="lazy" decoding="async">
     </span>
-    <span class="fg-el fg-stones" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/basalt-stones.webp" alt="" width="1536" height="996" loading="lazy" decoding="async">
-    </span>
   </div>
   <div class="foot-grid">
     <div class="foot-brand">
-      <svg viewBox="0 0 44 44" fill="none" width="34" height="34" aria-hidden="true">
-        <circle cx="22" cy="25" r="8.6" fill="#e0231c" fill-opacity=".9"/>
-        <path d="M5 13h34M9 18.4h26M22 8.5v27" stroke="#dfe7e0" stroke-width="1.5"/>
-      </svg>
-      <p>A five-chapter night walk through a Kyoto mountain temple. Three illustrated garden field notes
-        sit inside a live Three.js sanctuary.</p>
+      <div>
+        <p class="eyebrow foot-meta" data-rv="fade">End of the walk</p>
+        <p class="foot-brand__l1">I design for people, not just pixels.</p>
+        <p class="foot-brand__l2">Because great design should never stop at the screen.</p>
+      </div>
+      <div class="foot-brand__tag eyebrow" data-rv="fade"><span class="dot"></span>Designing for screens and beyond</div>
     </div>
-    <div><h4>Chapters</h4><ul>
-      <li><a href="#gate" data-cursor>The Sanmon</a></li>
-      <li><a href="#pathways" data-cursor>Still Gardens</a></li>
-      <li><a href="#lessons" data-cursor>Sacred Craft</a></li>
-      <li><a href="#eternity" data-cursor>Afterlight</a></li>
+    <div><h4>Navigation</h4><ul>
+      <li><a href="#top" data-cursor data-route="/">Home</a></li>
+      <li><a href="#pathways" data-cursor data-route="/case-studies">Case Studies</a></li>
+      <li><a href="#lessons" data-cursor data-route="/about-me">About Me</a></li>
+      <li><a href="#eternity" data-cursor data-route="/get-in-touch">Get in Touch</a></li>
     </ul></div>
-    <div><h4>Practice</h4><ul>
-      <li><a href="#lessons" data-cursor>Borrowed scenery</a></li>
-      <li><a href="#lessons" data-cursor>Lantern light</a></li>
-      <li><a href="#lessons" data-cursor>Charred cypress</a></li>
-      <li><a href="#lessons" data-cursor>Raked gravel</a></li>
+    <div><h4>Socials</h4><ul class="foot-socials">
+      <li class="foot-socials__row">
+        <a href="https://www.linkedin.com/in/suhani-shahu-b755463a0/" target="_blank" rel="noopener noreferrer" data-cursor><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>LinkedIn<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a>
+        <a href="https://in.pinterest.com/suhanishahu3008/_profile/" target="_blank" rel="noopener noreferrer" data-cursor><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.067-.877-.128-2.223.026-3.181.14-.867.902-5.518.902-5.518s-.23-.46-.23-1.14c0-1.068.62-1.866 1.392-1.866.656 0 .974.493.974 1.083 0 .658-.42 1.643-.635 2.556-.181.762.383 1.383 1.135 1.383 1.36 0 2.406-1.437 2.406-3.507 0-1.834-1.318-3.117-3.198-3.117-2.178 0-3.454 1.634-3.454 3.324 0 .658.253 1.363.569 1.746a.229.229 0 0 1 .052.219c-.057.238-.184.762-.209.869-.033.14-.108.169-.25.102-1.342-.63-2.184-2.607-2.184-4.197 0-3.421 2.484-6.566 7.16-6.566 3.759 0 6.685 2.679 6.685 6.264 0 3.735-2.353 6.741-5.622 6.741-1.098 0-2.129-.571-2.481-1.244 0 0-.542 2.061-.674 2.567-.244.938-.905 2.115-1.348 2.834 1.014.312 2.09.481 3.207.481 6.62 0 11.987-5.367 11.987-11.987C24.005 5.367 18.638 0 12.017 0z"/></svg></span>Pinterest<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a>
+      </li>
+      <li class="foot-socials__row">
+        <a href="https://www.behance.net/suhanishahu" target="_blank" rel="noopener noreferrer" data-cursor><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 7.615h-6.39v1.505h6.39v-1.505zm-13.126 1.72c1.372-.68 2.099-1.79 2.099-3.31 0-3.18-2.379-4.025-5.145-4.025h-5.828v16h6.104c2.907 0 5.896-1.226 5.896-4.688 0-2.135-1.032-3.51-3.126-3.977zm-5.616-4.999h2.586c1.152 0 2.202.316 2.202 1.68 0 1.256-.844 1.76-2.008 1.76h-2.78v-3.44zm2.892 10.71h-2.892v-3.986h2.955c1.417 0 2.394.607 2.394 2.022 0 1.514-1.184 1.964-2.457 1.964zm12.694-6.228c-3.185 0-5.36 2.276-5.36 5.482 0 3.328 2.045 5.4 5.36 5.4 2.692 0 4.548-1.222 5.107-3.242h-2.566c-.283.893-1.14 1.366-2.462 1.366-1.709 0-2.744-1.02-2.83-2.791h8.038v-.667c0-3.35-2.033-5.548-5.287-5.548zm-2.794 4.5c.168-1.34 1.076-2.31 2.673-2.31 1.31 0 2.28.912 2.396 2.31h-5.069z"/></svg></span>Behance<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a>
+        <a href="https://www.snapchat.com/@shahu_suhani" target="_blank" rel="noopener noreferrer" data-cursor style="transform:translateX(-2px)"><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C7.5 3 5 6.5 5 11c0 2.5.6 4.3.6 4.3-1 .3-1.8 1-1.8 1.8 0 .8.7 1.2 1.3 1.3.4 1.3 1.6 1.5 2.2.8.6.7 1.6 1 2.4.4.6.8 1.4 1.1 2.3 1.1.9 0 1.7-.3 2.3-1.1.8.6 1.8.3 2.4-.4.6.7 1.8.5 2.2-.8.6-.1 1.3-.5 1.3-1.3 0-.8-.8-1.5-1.8-1.8 0 0 .6-1.8.6-4.3 0-4.5-2.5-8-7-8Z"/><ellipse cx="9.2" cy="11.2" rx="1" ry="1.2"/><ellipse cx="14.8" cy="11.2" rx="1" ry="1.2"/></svg></span>Snapchat<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a>
+      </li>
+      <li><a href="https://www.instagram.com/_softy_3008" target="_blank" rel="noopener noreferrer" data-cursor><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span>Instagram<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a></li>
+      <li><a href="https://github.com/suhani-shahu3008" target="_blank" rel="noopener noreferrer" data-cursor><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a></li>
+      <li><a href="https://vercel.com/suhani-shahu" target="_blank" rel="noopener noreferrer" data-cursor><span class="foot-socials__mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 22 20.5H2Z"/></svg></span>Vercel<svg class="foot-socials__arrow" viewBox="0 0 14 14" fill="none" width="11" height="11" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.3"/></svg></a></li>
     </ul></div>
-    <div><h4>Elsewhere</h4><ul>
-      <li><a href="#top" data-cursor>Journal</a></li>
-      <li><a href="#top" data-cursor>Field notes</a></li>
-      <li><a href="#top" data-cursor>Colophon</a></li>
-    </ul></div>
+    <div><h4>Contact</h4>
+      <ul class="foot-contact">
+        <li><a href="tel:+919284828790" data-cursor><span class="foot-contact__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 3h3.2l1.4 4.4-2.2 1.7a12.4 12.4 0 0 0 5.9 5.9l1.7-2.2 4.4 1.4v3.2c0 1-.8 1.8-1.8 1.7A17.6 17.6 0 0 1 4.9 4.8C4.8 3.8 5.6 3 6.6 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>+91 92848 28790</a></li>
+        <li><a href="mailto:suhanishahu3008@gmail.com" data-cursor><span class="foot-contact__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.2" y="5.5" width="17.6" height="13" rx="1.8" stroke="currentColor" stroke-width="1.4"/><path d="M4.2 6.7 12 12.9l7.8-6.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>suhanishahu3008@gmail.com</a></li>
+      </ul>
+      <p class="foot-contact__note">Always open to exciting projects, collaborations, or just a good
+        conversation about design, technology, and what's next.</p>
+    </div>
   </div>
   <div class="foot-base">
-    <span>© 2026 Kage — Kage no Michi</span>
-    <span class="jp">静けさは一つの技である</span>
-    <span>WebGL · Onest · Kyoto</span>
+    <span>© 2026 Suhani Shahu. All rights reserved.</span>
+    <span>UI/UX Designer · Brand Designer · XR/Spatial Designer</span>
   </div>
 </footer>
+
+<p class="foot-closing">— Till we meet again —</p>
 
 </div><!-- /.page -->
 
@@ -2922,7 +3058,7 @@ function buildMaple(seed, x, z, scale) {
   const leafGeo = new THREE.PlaneGeometry(.36, .36);
   const leafMat = new THREE.MeshStandardMaterial({
     map: tx(texPetal()), color: 0xf7d3e0, alphaTest: .42, side: THREE.DoubleSide,
-    roughness: .82, metalness: 0, emissive: 0x5a2438, emissiveIntensity: .28,
+    roughness: .82, metalness: 0, emissive: 0x5a2438, emissiveIntensity: .15,
     vertexColors: true
   });
   const per = LOW ? 5 : 9;
@@ -2952,7 +3088,7 @@ function buildMaple(seed, x, z, scale) {
 
   const g = new THREE.Group();
   g.add(trunk); g.add(inst);
-  g.position.set(x, 0, z); g.scale.setScalar(scale || 1);
+  g.position.set(x, -0.4, z); g.scale.setScalar(scale || 1);
   g.rotation.y = rnd() * TAU;
   scene.add(g);
   /* leaves breathe in the wind */
@@ -3027,13 +3163,13 @@ function buildForeground() {
   const layers = [
     /* name        canvas                                                                     x     y     z     w     h   sway */
     ['grassFar',  texGrassCutout(101, { crest: .30, peak: .46, wide: .42, blades: 11000, len: 34, warm: .70, crest2: .46, crest3: .40 }),
-                  -3.4,  2.85, -0.4, 24, 12, .040],
+                  -3.4,  2.65, -0.4, 24, 12, .040],
     ['rockLeft',  texRockCutout(404, { blobs: [[.24, .78, .48, .38], [.58, .94, .46, .30], [.84, 1.06, .42, .28]] }),
                   -7.2,  2.55,  1.8, 17, 11.3, .010],
     ['grassMid',  texGrassCutout(202, { crest: .60, peak: .55, wide: .40, blades: 13000, len: 40, warm: .95, crest2: -.44, crest3: .34 }),
-                   3.9,  2.86,  3.6, 15,  7.5, .062],
+                   3.9,  2.66,  3.6, 15,  7.5, .062],
     ['grassNear', texGrassCutout(303, { crest: .42, peak: .62, wide: .48, blades: 16000, len: 50, warm: .85, crest2: .42, crest3: .44 }),
-                  -1.9,  2.92,  5.6, 12,  6, .092],
+                  -1.9,  2.72,  5.6, 12,  6, .092],
     ['bough',     texBranchCutout(505), 4.6, 2.95, 6.4, 13, 8.7, .045],
     ['rockNear',  texRockCutout(606, { blobs: [[.18, .86, .54, .44], [.54, 1.02, .50, .36], [.86, .92, .40, .32]] }),
                   -6.6,  1.70,  6.0, 9, 6, .008]
@@ -3082,9 +3218,9 @@ function buildWordmark() {
     /* the vertical wash is baked per glyph so the whole word shares one ramp */
     const gy0 = PAD + g.asc - ascMax, gy1 = PAD + g.asc + descMax * .4;
     const grad = x.createLinearGradient(0, gy0, 0, gy1);
-    grad.addColorStop(0, 'rgb(226,236,229)');
-    grad.addColorStop(.52, 'rgb(198,214,203)');
-    grad.addColorStop(1, 'rgb(150,170,157)');
+    grad.addColorStop(0, 'rgb(255,255,255)');
+    grad.addColorStop(.55, 'rgb(252,232,239)');
+    grad.addColorStop(1, 'rgb(248,214,228)');
     x.fillStyle = grad;
     x.strokeStyle = grad;
     x.lineWidth = SZ * 0.035;
@@ -4384,15 +4520,27 @@ function wireHeroExit() {
 function wireNav() {
   let last = 0;
   const rail = $('#rail');
-  const names = ['The Hidden Gate', 'The Sanmon', 'Still Gardens', 'Sacred Craft', 'Afterlight', 'Colophon'];
+  const names = ['Hero Section', 'Case Studies', 'The Tools', 'See all the case studies', 'About Me', 'Colophon'];
   SECS.forEach((s, i) => {
     const b = document.createElement('button');
-    b.innerHTML = '<i></i>'; b.title = names[i] || '';
+    b.innerHTML = '<i></i><span class="rail-tip">' + (names[i] || '') + '</span>';
     b.setAttribute('aria-label', names[i] || 'section');
     b.addEventListener('click', () => scrollTo({ top: anchors[i], behavior: REDUCE ? 'auto' : 'smooth' }));
     rail.appendChild(b);
   });
+  /* purely decorative — pads the rail out to 8 ticks total so it reads as a
+     fuller progress spine; these two never track scroll or navigate since
+     there are only 6 real sections, but still carry a hover label */
+  const decoNames = ['Get in touch', 'Footer'];
+  for (let k = 0; k < 8 - SECS.length; k++) {
+    const b = document.createElement('button');
+    b.innerHTML = '<i></i><span class="rail-tip">' + (decoNames[k] || '') + '</span>';
+    b.className = 'rail-deco'; b.tabIndex = -1;
+    b.setAttribute('aria-hidden', 'true');
+    rail.appendChild(b);
+  }
   const dots = $$('#rail button');
+  if (dots[activeSec]) dots[activeSec].classList.add('on');
   const links = $$('.nav-link');
   const burger = $('.nav-burger');
   const closeMenu = () => {
@@ -4419,8 +4567,10 @@ function wireNav() {
   links.forEach(link => link.addEventListener('click', closeMenu));
   /* these links now name real app pages, not chapters in the temple story —
      the page itself lives one level up, behind this frame's sandbox, so a
-     plain href can't reach it; hand the route to the parent instead */
-  links.forEach(link => {
+     plain href can't reach it; hand the route to the parent instead. Every
+     [data-route] on the page gets this — not just the top nav — so the
+     footer's own Navigation column reaches the real pages too */
+  $$('[data-route]').forEach(link => {
     const route = link.getAttribute('data-route');
     if (!route) return;
     link.addEventListener('click', e => {
@@ -4796,9 +4946,9 @@ const JOBS = [
     buildMaple(75, 16.5, -6.0, .88);
     /* light down onto each cluster from above the canopy so the blossoms
        catch a rim of light from overhead rather than glowing from beneath */
-    const bloomBack = new THREE.PointLight(0xffa0cf, 3.2, 32, 2);
+    const bloomBack = new THREE.PointLight(0xffa0cf, 2.0, 32, 2);
     bloomBack.position.set(13.5, 11.5, -22.0); scene.add(bloomBack);
-    const bloomBack2 = new THREE.PointLight(0xffa0cf, 2.8, 28, 2);
+    const bloomBack2 = new THREE.PointLight(0xffa0cf, 1.8, 28, 2);
     bloomBack2.position.set(-12.5, 11.0, -20.0); scene.add(bloomBack2);
   }],
   ['Painting the near grass', () => buildForeground()],
