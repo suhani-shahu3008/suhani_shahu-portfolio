@@ -25,7 +25,7 @@ export default function About() {
       <div className="about-hero" ref={heroRef}>
         <img
           className="about-hero__img"
-          src="/about-hero.png"
+          src="/about-hero.webp"
           alt=""
         />
         <div className="about-hero__scrim" />
