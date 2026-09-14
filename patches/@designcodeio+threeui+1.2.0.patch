@@ -1,0 +1,13 @@
+diff --git a/node_modules/@designcodeio/threeui/lib-dist/shaders/landing-pages/LandingPages.js b/node_modules/@designcodeio/threeui/lib-dist/shaders/landing-pages/LandingPages.js
+index 4d53968..062fb17 100644
+--- a/node_modules/@designcodeio/threeui/lib-dist/shaders/landing-pages/LandingPages.js
++++ b/node_modules/@designcodeio/threeui/lib-dist/shaders/landing-pages/LandingPages.js
+@@ -16,7 +16,7 @@ function t({ recipe: e, title: n, sourceUrl: a, ...r }) {
+   return /* @__PURE__ */ o(p, { ...s, customization: i, title: n, sourceUrl: a });
+ }
+ function Y(e) {
+-  return /* @__PURE__ */ o(t, { ...e, recipe: T, title: "Kage — Where stillness reveals the unseen", sourceUrl: "/landing-pages/kage.html" });
++  return /* @__PURE__ */ o(t, { ...e, recipe: T, title: "Kage — Where stillness reveals the unseen", sourceUrl: "/landing-pages/suhanishahu-portfolio.html" });
+ }
+ function A(e) {
+   return /* @__PURE__ */ o(t, { ...e, recipe: S, title: "Working Volumes — Seven Tools for Making", sourceUrl: "/landing-pages/complete-shelf-v2.html" });
