@@ -1,1 +1,501 @@
 @import "tailwindcss";
+
+:root {
+  --bg-void: #0d0a12;
+  --bg-void-2: #16121c;
+  --bg-cream-accent: #f5eddb;
+  --text-main: rgba(245, 238, 220, 0.92);
+  --text-dim: rgba(245, 238, 220, 0.6);
+  --pink-stroke: #f7c9d9;
+  --pink-glow: #fcc5d4;
+  --pink-tint: rgba(247, 201, 217, 0.14);
+  --pink-tint-soft: rgba(247, 201, 217, 0.06);
+  --pink-tint-hover: rgba(247, 201, 217, 0.10);
+  --warm-accent: #d9b48b;
+
+  --nav-w-collapsed: 80px;
+  --nav-w-expanded: 210px;
+  --nav-radius: 40px;
+  --nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --nav-spring: cubic-bezier(0.25, 0.9, 0.3, 1);
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 800px at 15% 10%, rgba(247, 201, 217, 0.05), transparent 60%),
+    radial-gradient(900px 700px at 85% 90%, rgba(217, 180, 139, 0.04), transparent 60%),
+    var(--bg-void);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- App shell ---------- */
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+}
+
+.app-main {
+  min-height: 100vh;
+  padding-left: calc(var(--nav-w-collapsed) + 48px);
+  padding-right: 48px;
+  transition: padding-left 420ms var(--nav-ease);
+}
+
+/* ---------- Page stubs ---------- */
+
+.page-stub {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.page-stub__eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--pink-glow);
+  margin: 0 0 18px 0;
+  opacity: 0.85;
+}
+
+.page-stub__title {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  font-size: clamp(56px, 8vw, 120px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+  text-shadow: 0 0 60px rgba(247, 201, 217, 0.18);
+}
+
+/* ---------- Side Nav ---------- */
+
+.side-nav {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--nav-w-collapsed);
+  z-index: 40;
+  transition: width 460ms var(--nav-spring), box-shadow 420ms var(--nav-ease);
+  will-change: width;
+  touch-action: none;
+}
+
+.side-nav[data-dragging="true"] {
+  transition: none;
+  cursor: grabbing;
+}
+
+.side-nav__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 22px 18px;
+  border-radius: var(--nav-radius);
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.10),
+    rgba(255, 255, 255, 0.04) 60%,
+    rgba(255, 255, 255, 0.06)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.20),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  transition: box-shadow 420ms var(--nav-ease), background 420ms var(--nav-ease);
+}
+
+/* Top gloss highlight */
+.side-nav__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 40%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.10),
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  border-radius: var(--nav-radius) var(--nav-radius) 0 0;
+}
+
+.side-nav[data-expanded="true"] .side-nav__inner {
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 42px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Logo */
+
+.side-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px 4px 8px;
+  color: var(--pink-stroke);
+  min-height: 44px;
+}
+
+.side-nav__logo-mark {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--pink-stroke);
+}
+
+.side-nav__wordmark {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 260ms var(--nav-ease) 60ms,
+    transform 320ms var(--nav-ease) 60ms;
+}
+
+.side-nav[data-expanded="true"] .side-nav__wordmark {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Divider */
+
+.side-nav__divider {
+  height: 1px;
+  margin: 6px 12px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(247, 201, 217, 0.35),
+    transparent
+  );
+}
+
+/* List */
+
+.side-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.side-nav__item {
+  --hover: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border-radius: 999px;
+  color: rgba(245, 238, 220, 0.78);
+  text-decoration: none;
+  min-height: 44px;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(1);
+  transition:
+    color 260ms var(--nav-ease),
+    background 260ms var(--nav-ease),
+    transform 180ms var(--nav-ease);
+}
+.side-nav__item:focus {
+  outline: none;
+}
+.side-nav__item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+/* Pressed (mouse :active, or keyboard Space/Enter via .is-pressed) */
+.side-nav__item:active,
+.side-nav__item.is-pressed {
+  transform: scale(0.94);
+  color: #ffffff;
+}
+.side-nav__item:active::after,
+.side-nav__item.is-pressed::after {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.14);
+  transition: opacity 90ms var(--nav-ease);
+}
+
+/* Collapsed: center the icon inside its row */
+.side-nav[data-expanded="false"] .side-nav__item {
+  justify-content: center;
+}
+
+.side-nav__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transition: opacity 260ms var(--nav-ease);
+  pointer-events: none;
+}
+
+/* Collapsed active/hover: perfect circle sized to the icon */
+.side-nav[data-expanded="false"] .side-nav__item::after {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
+
+.side-nav__item:hover {
+  color: #ffffff;
+}
+.side-nav__item:hover::after {
+  opacity: 1;
+}
+
+.side-nav__item.is-active {
+  color: #ffffff;
+}
+.side-nav__item.is-active::after {
+  opacity: 1;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.06)
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+/* Icon slot: fixed circle so the icon doesn't shift on expand */
+.side-nav__icon {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.68);
+  transition: color 260ms var(--nav-ease);
+  position: relative;
+  z-index: 1;
+}
+.side-nav__item:hover .side-nav__icon {
+  color: #ffffff;
+}
+.side-nav__item:active .side-nav__icon,
+.side-nav__item.is-pressed .side-nav__icon {
+  color: #ffffff;
+}
+.side-nav__item:focus-visible .side-nav__icon {
+  color: #ffffff;
+}
+.side-nav__item.is-active .side-nav__icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.30));
+}
+
+/* Label */
+.side-nav__label {
+  position: relative;
+  z-index: 1;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 260ms var(--nav-ease),
+    transform 320ms var(--nav-ease);
+  transition-delay: 0ms;
+}
+
+/* Collapsed: fully remove label from layout so icons stay centered */
+.side-nav[data-expanded="false"] .side-nav__label {
+  display: none;
+}
+
+.side-nav[data-expanded="true"] .side-nav__label {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: calc(60ms + var(--i, 0) * 40ms);
+}
+
+/* Spacer pushes pin to bottom */
+.side-nav__spacer {
+  flex: 1 1 auto;
+  min-height: 8px;
+}
+
+/* Pin toggle */
+.side-nav__pin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  border-radius: 999px;
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  min-height: 44px;
+  font: inherit;
+  text-align: left;
+  transition: color 260ms var(--nav-ease), background 260ms var(--nav-ease);
+}
+
+.side-nav__pin .side-nav__label {
+  opacity: 0;
+  transform: translateX(-6px);
+  --i: 5;
+}
+.side-nav[data-expanded="true"] .side-nav__pin .side-nav__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.side-nav__pin > svg {
+  flex: 0 0 auto;
+  width: 44px;
+  color: var(--pink-stroke);
+}
+
+.side-nav__pin:hover {
+  color: var(--text-main);
+  background: var(--pink-tint-hover);
+}
+
+/* ---------- Responsive: shrink main padding on narrow screens ---------- */
+
+@media (max-width: 720px) {
+  .side-nav {
+    left: 12px;
+  }
+  .app-main {
+    padding-left: calc(var(--nav-w-collapsed) + 24px);
+    padding-right: 24px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .side-nav,
+  .side-nav__inner,
+  .side-nav__wordmark,
+  .side-nav__label,
+  .side-nav__icon,
+  .side-nav__item,
+  .side-nav__item::after,
+  .side-nav__dot,
+  .app-main {
+    transition: none !important;
+  }
+}
+
+/* Home hero — Kage landing page (ThreeUI), full-bleed regardless of .app-main's nav padding */
+.home-hero {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.home-hero .landing-page-frame {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .home-hero {
+    left: calc(var(--nav-w-collapsed) + 24px);
+    width: auto;
+  }
+}
+
+/* ---------- Resume download button (top-right, real ThreeUI shader) ----------
+   The shader's own body is `display:grid;place-items:center`, which only
+   centers its (much larger, bloom-padded) stage when the host box is at
+   least as big as that stage — a smaller host just lets the grid's
+   auto-sized track overflow from the top-left corner instead of centering.
+   So `.resume-btn-shell` is a small clipping window, and `__stage` inside it
+   is sized to the button's real natural footprint (bw+2*pad × bh+2*pad, for
+   --h:52px and the "Download Resume" pill width) and pulled up-left by
+   exactly (pad - visible margin) so the pill lands inside the window instead
+   of off past its edge. */
+
+.resume-btn-shell {
+  position: fixed;
+  top: 96px;
+  right: 30px;
+  z-index: 40;
+  width: 236px;
+  height: 54px;
+  border-radius: 999px;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.resume-btn-shell__stage {
+  position: absolute;
+  width: 416px;
+  height: 234px;
+  left: -90px;
+  top: -90px;
+}
+
+.resume-btn-shell .liquid-metal-button {
+  border-radius: 999px;
+}
+
+.resume-btn-shell.is-disabled {
+  filter: grayscale(1) opacity(0.45);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .resume-btn-shell {
+    top: 14px;
+    right: 12px;
+  }
+}
+
+
+
+
+
