@@ -2,12 +2,27 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import SiteRail from '../components/SiteRail'
 import ContactForm from '../components/ContactForm'
+import IndexRail from '../components/IndexRail'
+
+const INDEX_ITEMS = [
+  { num: '02', label: 'Contact Info' },
+  { num: '03', label: 'Get in Touch' },
+  { num: '04', label: 'Availability' },
+]
+
+const RAIL_SECTIONS = [
+  { label: 'The Hero Section', id: 'gt-hero' },
+  { label: 'Contact Info', id: 'gt-contact-info' },
+  { label: 'Get in Touch', id: 'gt-form' },
+  { label: 'Availability', id: 'gt-availability' },
+  { label: 'Footer', id: 'site-footer' },
+]
 
 export default function Contact() {
   return (
     <>
       <SiteNav />
-      <SiteRail />
+      <SiteRail sections={RAIL_SECTIONS} />
 
       <section id="gt-hero" className="page-stub">
         <p className="page-stub__eyebrow">04 · GET IN TOUCH</p>
@@ -53,6 +68,7 @@ export default function Contact() {
         </p>
       </section>
 
+      <IndexRail items={INDEX_ITEMS} />
       <SiteFooter />
     </>
   )

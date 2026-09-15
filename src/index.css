@@ -1158,6 +1158,58 @@ body,
   transition-delay: .3s;
 }
 
+/* ---------- Index rail — numbered dot/line list, exact port of Home's
+   .idx-rail (public/landing-pages/suhanishahu-portfolio.html) ---------- */
+
+.idx-rail {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.4vh, 22px);
+  /* .app-main adds 48px of horizontal padding that Home's own idx-rail
+     never has — cancel it so these rows reach the same left/right edges
+     as the footer, instead of sitting doubly-inset. */
+  margin-left: -48px;
+  margin-right: -48px;
+  padding: clamp(40px, 7vh, 86px) clamp(24px, 6vw, 72px) clamp(20px, 4vh, 40px);
+  position: relative;
+  z-index: 2;
+}
+
+.idx-rail__row { display: flex; align-items: center; gap: 14px; }
+
+.idx-rail .dot {
+  position: relative;
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--pink-glow);
+  box-shadow: 0 0 10px var(--pink-glow);
+}
+
+.idx-rail .dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--pink-glow);
+  animation: dotPing 1.8s cubic-bezier(0, 0, .2, 1) infinite;
+}
+
+.idx-rail .k {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.idx-rail .k b { color: var(--pink-glow); font-weight: 500; }
+
+.idx-rail .rule { flex: 1 1 auto; height: 1px; background: rgba(245, 238, 220, .07); }
+
 /* ---------- Contact page — Contact Information / Get in Touch / Availability ---------- */
 
 .contact-info {
