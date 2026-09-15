@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
+import SiteRail from '../components/SiteRail'
 
 export default function About() {
   const heroRef = useRef(null)
@@ -22,7 +23,8 @@ export default function About() {
   return (
     <>
       <SiteNav />
-      <div className="about-hero" ref={heroRef}>
+      <SiteRail />
+      <div className="about-hero" id="about-hero" ref={heroRef}>
         <img
           className="about-hero__img"
           src="/about-hero.webp"
@@ -32,7 +34,7 @@ export default function About() {
         <div className="about-hero__bottom-fade" />
         <div className="about-hero__overlay" />
       </div>
-      <section className="page-stub">
+      <section id="about-title" className="page-stub">
         <p className="page-stub__eyebrow">03 · ABOUT ME</p>
         <h1 className="page-stub__title">About Me</h1>
       </section>

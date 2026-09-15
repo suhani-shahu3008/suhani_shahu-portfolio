@@ -53,7 +53,7 @@ function Arrow() {
  */
 export default function SiteFooter() {
   return (
-    <footer className="foot">
+    <footer className="foot" id="site-footer">
       <div className="foot-grid">
         <div className="foot-brand">
           <div>

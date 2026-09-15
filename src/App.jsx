@@ -6,7 +6,6 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import SiteCursor from './components/SiteCursor'
 import SiteCursorWisps from './components/SiteCursorWisps'
-import SiteRail from './components/SiteRail'
 
 export default function App() {
   const { pathname } = useLocation()
@@ -17,7 +16,6 @@ export default function App() {
       {/* Home runs its own cursor and wisps inside the Kage iframe */}
       {!isHome && <SiteCursor />}
       {!isHome && <SiteCursorWisps />}
-      {!isHome && <SiteRail />}
       <main className="app-main">
         <Routes>
           <Route path="/" element={<Home />} />
