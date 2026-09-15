@@ -1131,6 +1131,11 @@ body,
   background: var(--vermilion);
 }
 
+.rail button:hover i {
+  width: 22px;
+  opacity: .85;
+}
+
 .rail-tip {
   position: absolute;
   right: 100%;
@@ -1155,7 +1160,7 @@ body,
 
 .rail button:hover .rail-tip {
   opacity: 1;
-  transition-delay: .3s;
+  transition-delay: 0s;
 }
 
 /* ---------- Index rail — numbered dot/line list, exact port of Home's
