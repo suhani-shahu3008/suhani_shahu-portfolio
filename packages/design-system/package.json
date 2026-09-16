@@ -1,0 +1,19 @@
+{
+  "name": "suhani-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reusable UI components extracted from Suhani Shahu's portfolio site.",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./styles.css": "./src/styles.css"
+  },
+  "peerDependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3",
+    "three": "^0.169.0"
+  }
+}
