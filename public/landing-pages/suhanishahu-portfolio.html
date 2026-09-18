@@ -1192,18 +1192,8 @@ body[data-layout-footer="b"] .foot-grid > div:nth-child(n+3){
   </div>
 </div>
 
-<!-- ============================================================ nav -->
-<header class="nav" id="nav">
-  <a class="nav-logo" href="#gate" data-cursor data-route="/"><span class="lt" style="--i:0">S</span><span class="lt" style="--i:1">u</span><span class="lt" style="--i:2">h</span><span class="lt" style="--i:3">a</span><span class="lt" style="--i:4">n</span><span class="lt" style="--i:5">i</span><span class="lt" style="--i:6">&nbsp;</span><span class="lt" style="--i:7">S</span><span class="lt" style="--i:8">h</span><span class="lt" style="--i:9">a</span><span class="lt" style="--i:10">h</span><span class="lt" style="--i:11">u</span></a>
-  <nav class="nav-links" id="navlinks">
-    <a class="nav-link" href="#gate" data-cursor data-route="/"><span>Home</span><span class="alt">ホーム</span></a>
-    <a class="nav-link" href="#pathways" data-cursor data-route="/case-studies"><span>Case Studies</span><span class="alt">事例</span></a>
-    <a class="nav-link" href="#lessons" data-cursor data-route="/about-me"><span>About Me</span><span class="alt">私について</span></a>
-    <a class="nav-link" href="#eternity" data-cursor data-route="/get-in-touch"><span>Get in touch</span><span class="alt">お問い合わせ</span></a>
-  </nav>
-  <button class="nav-burger" aria-label="Menu" data-cursor><i></i><i></i></button>
-</header>
-
+<!-- nav removed: the real <SiteNav /> is now overlaid by the parent app
+     (see src/pages/Home.jsx) instead of this frame drawing its own. -->
 <audio id="theme-audio" src="/audio/theme.mp3" loop preload="auto"></audio>
 <button class="audio-toggle" id="audioToggle" type="button" aria-label="Play background music" aria-pressed="false" data-cursor>
   <svg class="audio-toggle__icon audio-toggle__icon--on" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -4519,7 +4509,7 @@ function layoutWord() {
 /* =================================================== 11 · page wiring */
 const $  = s => document.querySelector(s);
 const $$ = s => [].slice.call(document.querySelectorAll(s));
-const nav = $('#nav'), preEl = $('#pre'), preFill = $('#pre-fill'), prePct = $('#pre-pct');
+const preEl = $('#pre'), preFill = $('#pre-fill'), prePct = $('#pre-pct');
 
 function wireReveals() {
   splitHeadingWords();
@@ -4733,7 +4723,6 @@ function wireAudio() {
 }
 
 function wireNav() {
-  let last = 0;
   const rail = $('#rail');
   /* The first four ticks track the camera-choreographed chapters (SECS/CAM).
      "Get in touch" has no data-cam of its own — it's a plain scroll target —
@@ -4767,30 +4756,6 @@ function wireNav() {
      not the 5th — everything else maps straight across */
   const railIndexOf = a => (a === SECS.length - 1 ? dots.length - 1 : a);
   if (dots[railIndexOf(activeSec)]) dots[railIndexOf(activeSec)].classList.add('on');
-  const links = $$('.nav-link');
-  const burger = $('.nav-burger');
-  const closeMenu = () => {
-    nav.classList.remove('menu-open');
-    burger.classList.remove('active');
-    burger.setAttribute('aria-expanded', 'false');
-    document.documentElement.classList.remove('nav-open');
-  };
-  const setMenu = open => {
-    /* clear the scroll-hide before the sheet opens: leaving it set would ease
-       the bar back down on close, promoting it again under the outgoing sheet */
-    if (open) nav.classList.remove('hide');
-    nav.classList.toggle('menu-open', open);
-    burger.classList.toggle('active', open);
-    burger.setAttribute('aria-expanded', String(open));
-    document.documentElement.classList.toggle('nav-open', open);
-  };
-  burger.setAttribute('aria-controls', 'navlinks');
-  burger.setAttribute('aria-expanded', 'false');
-  burger.addEventListener('click', () => {
-    if (vpW() > 820) return;
-    setMenu(!nav.classList.contains('menu-open'));
-  });
-  links.forEach(link => link.addEventListener('click', closeMenu));
   /* these links now name real app pages, not chapters in the temple story —
      the page itself lives one level up, behind this frame's sandbox, so a
      plain href can't reach it; hand the route to the parent instead. Every
@@ -4804,16 +4769,8 @@ function wireNav() {
       parent.postMessage({ kageNav: route }, '*');
     });
   });
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-  addEventListener('resize', () => { if (vpW() > 820) closeMenu(); }, { passive:true });
   window.addEventListener('scroll', () => {
     const y = scrollY;
-    nav.classList.toggle('stuck', y > 40);
-    /* and don't even mark it hidden while the menu is open, or the class lands
-       the moment the sheet closes and the bar blinks away under the thumb */
-    nav.classList.toggle('hide',
-      !nav.classList.contains('menu-open') && y > last + 4 && y > vpH() * .8);
-    last = y;
     const a = Math.round(progressFor(y));
     if (a !== activeSec) {
       activeSec = a;
