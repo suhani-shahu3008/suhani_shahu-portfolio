@@ -955,3 +955,167 @@
 @media (max-width: 560px) {
   .cf-row--split { grid-template-columns: 1fr; gap: 20px; }
 }
+
+/* ---------- Button (Portfolio Design System) ---------- */
+
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 120px;
+  max-width: 240px;
+  border-radius: 999px;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .18s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease;
+}
+
+.btn-gloss { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.btn-icon { display: inline-flex; position: relative; z-index: 1; }
+.btn-icon svg { display: block; width: 1em; height: 1em; }
+.btn-label { position: relative; z-index: 1; }
+
+.btn-spinner {
+  width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid currentColor; border-top-color: transparent;
+  opacity: .55;
+  animation: btnSpin .7s linear infinite;
+  display: inline-block; position: relative; z-index: 1;
+}
+
+/* sizes */
+.btn-sm { height: 40px; padding: 0 20px; font-size: 13px; }
+.btn-md { height: 48px; padding: 0 24px; font-size: 14px; }
+.btn-lg { height: 56px; padding: 0 28px; font-size: 15px; }
+.btn-icon-only { min-width: 0; max-width: none; padding: 0; }
+.btn-icon-only.btn-sm { width: 40px; }
+.btn-icon-only.btn-md { width: 48px; }
+.btn-icon-only.btn-lg { width: 56px; }
+
+/* primary — liquid glass */
+.btn-primary {
+  color: #241c22;
+  background: linear-gradient(180deg, rgba(255, 208, 228, .82), rgba(255, 190, 218, .78));
+  border: 1px solid rgba(255, 255, 255, .7);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 1px 3px rgba(255, 105, 170, .18), inset 0 1px 0 rgba(255, 255, 255, .75);
+}
+.btn-primary .btn-gloss { background: linear-gradient(135deg, rgba(255, 255, 255, .55) 0%, transparent 55%); }
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(255, 218, 234, .9), rgba(255, 198, 222, .86));
+  border-color: rgba(255, 255, 255, .85);
+  box-shadow: 0 2px 6px rgba(255, 105, 170, .28), inset 0 1px 0 rgba(255, 255, 255, .85);
+}
+
+.btn-primary:focus-visible {
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .75), 0 0 0 3px rgba(255, 180, 215, .85);
+}
+
+.btn-primary:active:not(:disabled) {
+  color: #1c1519;
+  background: linear-gradient(180deg, rgba(255, 195, 220, .8), rgba(255, 170, 205, .76));
+  border-color: rgba(255, 255, 255, .55);
+  box-shadow: inset 0 1px 2px rgba(200, 60, 120, .2);
+  transform: scale(.97);
+}
+
+.btn-primary.is-active {
+  color: #1c1519;
+  background: linear-gradient(180deg, rgba(255, 213, 232, .86), rgba(255, 185, 215, .8));
+  border-color: rgba(255, 255, 255, .8);
+  box-shadow: 0 1px 4px rgba(255, 105, 170, .3), inset 0 1px 0 rgba(255, 255, 255, .8);
+}
+
+.btn-primary:disabled {
+  color: rgba(36, 28, 34, .32);
+  background: rgba(220, 212, 216, .22);
+  border-color: rgba(255, 255, 255, .22);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-primary.btn-loading { color: rgba(36, 28, 34, .65); cursor: default; }
+
+/* secondary — glass */
+.btn-secondary {
+  color: rgba(255, 255, 255, .92);
+  background: linear-gradient(180deg, rgba(30, 30, 32, .92), rgba(14, 14, 16, .92));
+  border: 1px solid rgba(255, 255, 255, .14);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 8px 20px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .03);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(40, 40, 42, .94), rgba(18, 18, 20, .94));
+  border-color: rgba(255, 255, 255, .24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .24), 0 10px 24px rgba(0, 0, 0, .5);
+}
+.btn-secondary:hover:not(:disabled) .btn-gloss {
+  background: linear-gradient(to top, rgba(0, 0, 0, .1), transparent);
+  position: absolute; left: 0; right: 0; bottom: 0; top: auto; height: 55%;
+}
+
+.btn-secondary:focus-visible {
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 0 0 3px rgba(255, 255, 255, .15), 0 8px 20px rgba(0, 0, 0, .45);
+}
+.btn-secondary:focus-visible .btn-gloss {
+  background: linear-gradient(to top, rgba(0, 0, 0, .12), transparent);
+  position: absolute; left: 0; right: 0; bottom: 0; top: auto; height: 55%;
+}
+
+.btn-secondary:active:not(:disabled) {
+  color: rgba(255, 255, 255, .85);
+  background: linear-gradient(180deg, rgba(12, 12, 14, .94), rgba(6, 6, 7, .94));
+  border-color: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), inset 0 2px 6px rgba(0, 0, 0, .5);
+  transform: scale(.97);
+}
+
+.btn-secondary.is-active {
+  background: linear-gradient(180deg, rgba(36, 36, 38, .94), rgba(16, 16, 18, .94));
+  border-color: rgba(255, 255, 255, .22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 8px 18px rgba(0, 0, 0, .5);
+}
+.btn-secondary.is-active .btn-gloss {
+  background: linear-gradient(to top, rgba(0, 0, 0, .28), transparent);
+  position: absolute; left: 0; right: 0; bottom: 0; top: auto; height: 55%;
+}
+
+.btn-secondary:disabled {
+  color: rgba(255, 255, 255, .3);
+  background: rgba(255, 255, 255, .02);
+  border-color: rgba(255, 255, 255, .12);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-secondary.btn-loading { color: rgba(255, 255, 255, .6); cursor: default; }
+
+/* ---------- Logo (Portfolio Design System) ---------- */
+
+.logo-wordmark {
+  display: inline-block;
+  font-family: 'Clicker Script', cursive;
+  font-weight: 400;
+  line-height: 1;
+  color: #f6b8d1;
+  filter: drop-shadow(0 4px 16px rgba(246, 184, 209, .35));
+  text-decoration: none;
+}

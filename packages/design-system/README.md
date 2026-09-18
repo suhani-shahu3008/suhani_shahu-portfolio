@@ -12,9 +12,10 @@ correctly out of the box but is fully reusable for other layouts.
   `useLocation`.
 - **`three`** — required by `SiteCursorWisps` (WebGL particle trail).
 - **Fonts**: components reference `Manrope`, `JetBrains Mono`,
-  `Instrument Serif`, and `Cormorant Garamond` but don't ship them — load
-  them yourself (e.g. `<link>` to Google Fonts, or self-hosted
-  `@font-face`). Without them, text renders in the browser's fallback font.
+  `Instrument Serif`, `Cormorant Garamond`, and (for `Logo`) `Clicker Script`
+  but don't ship them — load them yourself (e.g. `<link>` to Google Fonts,
+  or self-hosted `@font-face`). Without them, text renders in the browser's
+  fallback font.
 - **`src/styles.css`** — import this once; it carries the tokens (CSS custom
   properties) and per-component styles referenced by class name.
 
@@ -28,6 +29,8 @@ correctly out of the box but is fully reusable for other layouts.
 | `IndexRail` | Numbered dot/line index list |
 | `SiteFooter` | Multi-column footer — brand, nav, socials, contact |
 | `ContactForm` | Validated contact form. No `accessKey` → submits are mocked (demoable without credentials). Pass a [web3forms.com](https://web3forms.com) `accessKey`, or `onSubmit` to handle submission yourself |
+| `Button` | Pill button — `primary` (blush-pink liquid glass) / `secondary` (dark glass) variants, `sm`/`md`/`lg` sizes, icon/icon-only, loading state |
+| `Logo` | "Clicker Script" cursive wordmark, reserved for the site name/monogram |
 | `ResumeButton` | WebGL "liquid metal" pill button wired to trigger a file download |
 | `LiquidMetalButton` | The underlying WebGL pill button (real-time shader, iframe-sandboxed) |
 | `SiteCursor` | Full-viewport custom cursor ring, swells over `[data-cursor]` elements |
