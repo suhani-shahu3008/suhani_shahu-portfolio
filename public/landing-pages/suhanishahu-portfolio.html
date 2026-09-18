@@ -233,51 +233,6 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .nav-link:hover span:not(.alt){ color:var(--bone); }
 .nav-link.on{ color:var(--bone); }
 .nav-link.on::after{ content:''; position:absolute; left:0; bottom:0; width:100%; height:1px; background:var(--vermilion); }
-.nav-cta::before{ display:none; }
-
-/* Get in touch — stays a restrained transparent-outline liquid-glass pill
-   at all times (no fill swap on hover). Only the arrow moves: it flies from
-   its resting spot on the right to the left of the label, and a small pink
-   pill badge — smaller than the button itself — fades in behind it once
-   it lands there. */
-.nav-cta{
-  display:inline-flex; align-items:center; gap:10px;
-  height:auto; overflow:visible; text-transform:none; letter-spacing:0;
-  font-weight:600; font-size:14px; color:var(--bone);
-  padding:11px 20px; border-radius:999px;
-  background:rgba(246,184,209,.06);
-  border:2px solid rgba(246,184,209,.28);
-  backdrop-filter:blur(16px) saturate(170%);
-  -webkit-backdrop-filter:blur(16px) saturate(170%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
-  transition:transform .45s cubic-bezier(.34,1.56,.64,1), background .32s var(--ease-out), border-color .32s var(--ease-out), box-shadow .32s var(--ease-out);
-}
-.nav-cta > span:not(.nav-cta__icon){ display:block; height:auto; line-height:1.2; transform:none !important; color:inherit; }
-.nav-cta:hover{
-  background:rgba(246,184,209,.12);
-  border-color:rgba(246,184,209,.7);
-  box-shadow:0 0 0 1px rgba(246,184,209,.15), 0 8px 24px rgba(246,184,209,.2), inset 0 1px 0 rgba(255,255,255,.18);
-}
-.nav-cta:active{ transform:scale(.94); transition-duration:.12s; }
-.nav-cta.on::after{ display:none; }
-.nav-cta .nav-cta__icon{
-  position:relative;
-  width:16px; height:16px; flex:0 0 auto; display:grid; place-items:center;
-  color:var(--bone);
-  transition:transform .5s cubic-bezier(.34,1.56,.64,1);
-  z-index:1;
-}
-.nav-cta .nav-cta__icon svg{ width:16px; height:16px; display:block; position:relative; z-index:1; }
-.nav-cta .nav-cta__icon::before{
-  content:''; position:absolute; inset:-8px; z-index:0;
-  border-radius:50%;
-  background:linear-gradient(135deg,#ff8fb5,#ff4f9a);
-  box-shadow:0 4px 12px rgba(255,79,154,.5);
-  opacity:0; transform:scale(.5);
-  transition:opacity .35s var(--ease-out), transform .35s var(--ease-out);
-}
-.nav-cta:hover .nav-cta__icon{ transform:translateX(-136px); }
-.nav-cta:hover .nav-cta__icon::before{ opacity:1; transform:scale(1); }
 .nav-burger{ margin-left:clamp(18px,2.6vw,42px); width:26px; height:16px; position:relative; flex:0 0 auto; }
 .nav-burger i{ position:absolute; right:0; height:1.5px; background:var(--bone); transition:width .45s var(--ease-out), transform .45s var(--ease-out); }
 .nav-burger i:nth-child(1){ top:4px; width:26px; }
@@ -1244,12 +1199,7 @@ body[data-layout-footer="b"] .foot-grid > div:nth-child(n+3){
     <a class="nav-link" href="#gate" data-cursor data-route="/"><span>Home</span><span class="alt">ホーム</span></a>
     <a class="nav-link" href="#pathways" data-cursor data-route="/case-studies"><span>Case Studies</span><span class="alt">事例</span></a>
     <a class="nav-link" href="#lessons" data-cursor data-route="/about-me"><span>About Me</span><span class="alt">私について</span></a>
-    <a class="nav-link nav-cta" href="#eternity" data-cursor data-route="/get-in-touch">
-      <span>Get in touch</span>
-      <span class="nav-cta__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </a>
+    <a class="nav-link" href="#eternity" data-cursor data-route="/get-in-touch"><span>Get in touch</span><span class="alt">お問い合わせ</span></a>
   </nav>
   <button class="nav-burger" aria-label="Menu" data-cursor><i></i><i></i></button>
 </header>
