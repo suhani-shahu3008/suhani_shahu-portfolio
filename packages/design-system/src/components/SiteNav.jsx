@@ -7,27 +7,24 @@ const DEFAULT_LINKS = [
   { to: '/', label: 'Home', alt: 'ホーム' },
   { to: '/case-studies', label: 'Case Studies', alt: '事例' },
   { to: '/about-me', label: 'About Me', alt: '私について' },
+  { to: '/get-in-touch', label: 'Get in touch', alt: 'お問い合わせ' },
 ]
 
 /**
  * Sticky top nav bar with a per-letter animated logo, underline-hover links,
- * a pill CTA, and a mobile slide-in menu. Requires a react-router-dom
+ * and a mobile slide-in menu. Requires a react-router-dom
  * `<Router>` ancestor (uses `Link` / `useLocation`).
  *
  * @param {{
  *   logoText?: string,
  *   logoTo?: string,
  *   links?: Array<{ to: string, label: string, alt?: string }>,
- *   ctaLabel?: string,
- *   ctaTo?: string,
  * }} props
  */
 export default function SiteNav({
   logoText = DEFAULT_LOGO_TEXT,
   logoTo = '/',
   links = DEFAULT_LINKS,
-  ctaLabel = 'Get in touch',
-  ctaTo = '/get-in-touch',
 }) {
   const navRef = useRef(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -89,14 +86,6 @@ export default function SiteNav({
             <span className="alt">{alt}</span>
           </Link>
         ))}
-        <Link className="nav-link nav-cta" to={ctaTo} data-cursor>
-          <span>{ctaLabel}</span>
-          <span className="nav-cta__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        </Link>
       </nav>
 
       <button
