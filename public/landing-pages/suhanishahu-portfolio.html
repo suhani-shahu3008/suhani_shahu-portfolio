@@ -332,7 +332,15 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
           mask-image:linear-gradient(transparent, #000 44%);
 }
 #pathways::before{ background:radial-gradient(108% 64% at 50% 50%, rgba(4,7,10,.70), rgba(4,7,10,.44) 50%, rgba(4,7,10,0)); }
-#eternity::before{ background:radial-gradient(82% 58% at 50% 46%, rgba(4,7,10,.42), rgba(4,7,10,.8) 56%, rgba(4,7,10,.96) 82%, rgba(4,7,10,.1)); }
+#eternity::before{ background:radial-gradient(82% 58% at 50% 46%, rgba(4,7,10,.42), rgba(4,7,10,.8) 56%, rgba(4,7,10,.96) 82%, rgba(4,7,10,.1));
+  /* the shared -22%/-4% inset overshoots past the section's own bottom
+     edge by design (so the scrim never lands as a hard seam), but with
+     Get in Touch now the very next section, that unmasked overshoot was
+     washing a heavy dark gradient across the top of the contact form.
+     Fading the mask out well before the overshoot keeps the vignette
+     behind About Me's own copy but stops it bleeding into the form. */
+  -webkit-mask-image:linear-gradient(transparent, #000 44%, #000 66%, transparent 88%);
+          mask-image:linear-gradient(transparent, #000 44%, #000 66%, transparent 88%); }
 /* lighter than the default chapter scrim — the temple should read through
    the glass bubbles here, not sit behind a near-solid wash */
 #tools::before{ background:radial-gradient(108% 62% at 50% 50%, rgba(4,7,10,.56), rgba(4,7,10,.34) 48%, rgba(4,7,10,.06) 76%, rgba(4,7,10,0)); }
@@ -773,7 +781,16 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 /* — Get in Touch form: own standalone section below the index rail, above
      the footer — deliberately its own namespace (.gt- and .cf- prefixes)
      so nothing here touches .fin/.sec-head/other section styling. */
-.gt-section{ padding:clamp(60px,10vh,120px) var(--pad); }
+.gt-section{ position:relative; padding:clamp(60px,10vh,120px) var(--pad); }
+.gt-section::before{
+  /* the same "hold the copy off the scene" scrim every other .sec gets,
+     just noticeably lighter — the 3D garden should still read clearly
+     through the whole Get in Touch section, not just around the form. */
+  content:''; position:absolute; inset:-10% -4%; z-index:-1; pointer-events:none;
+  background:radial-gradient(100% 62% at 32% 44%, rgba(4,7,10,.46), rgba(4,7,10,.3) 46%, rgba(4,7,10,.1) 74%, rgba(4,7,10,0));
+  -webkit-mask-image:linear-gradient(transparent, #000 20%, #000 82%, transparent);
+          mask-image:linear-gradient(transparent, #000 20%, #000 82%, transparent);
+}
 .gt-grid{
   width:100%;
   display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.18fr);
