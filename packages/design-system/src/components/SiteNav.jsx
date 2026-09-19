@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import Logo from './Logo.jsx'
 
 const DEFAULT_LOGO_TEXT = 'Suhani Shahu'
 
@@ -74,9 +75,7 @@ export default function SiteNav({
   return (
     <header className="nav" ref={navRef}>
       <Link className="nav-logo" to={logoTo} data-cursor>
-        {[...logoText].map((ch, i) => (
-          <span className="lt" key={i} style={{ '--i': i }}>{ch}</span>
-        ))}
+        <Logo as="span" text={logoText} size={28} />
       </Link>
 
       <nav className="nav-links">
