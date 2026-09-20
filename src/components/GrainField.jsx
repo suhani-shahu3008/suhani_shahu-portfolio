@@ -3,17 +3,41 @@ import { useEffect, useRef } from 'react'
 const BG = '#0b0a0d'
 const PINK = [246, 160, 181]
 const GRAY = [186, 186, 190]
-const DENSITY = 9000 // px^2 per particle — sparse, fine grain
+const TILE = 160 // px — repeating static grain-texture tile
+const TILE_DENSITY = 260 // px^2 per grain speck inside the tile
+const DUST_DENSITY = 9000 // px^2 per interactive dust particle
 const CURSOR_RADIUS = 70
 const MAX_PUSH = 7
 const EASE = 0.12
 const SETTLE_EPSILON = 0.03
 
+function buildGrainTile() {
+  const tile = document.createElement('canvas')
+  tile.width = TILE
+  tile.height = TILE
+  const tctx = tile.getContext('2d')
+  const count = Math.round((TILE * TILE) / TILE_DENSITY)
+  for (let i = 0; i < count; i++) {
+    const isPink = Math.random() < 0.75
+    const [r, g, b] = isPink ? PINK : GRAY
+    const a = isPink ? Math.random() * 0.09 + 0.03 : Math.random() * 0.05 + 0.02
+    const radius = Math.random() * 0.55 + 0.25
+    tctx.beginPath()
+    tctx.fillStyle = `rgba(${r},${g},${b},${a})`
+    tctx.arc(Math.random() * TILE, Math.random() * TILE, radius, 0, Math.PI * 2)
+    tctx.fill()
+  }
+  return tile
+}
+
 /**
- * Full-viewport, fixed, canvas-based dust field: sparse monochrome/pink
- * grain that stays static until the cursor passes near it, then eases
- * back to rest. No continuous animation loop — it only runs rAF while
- * particles are still moving, and stops the moment everything settles.
+ * Full-viewport, fixed, canvas-based dust field for the Get in Touch page.
+ * Two layers, both painted every frame but cheap:
+ *  - a static, tileable grain texture (fine, dense, never moves) that gives
+ *    the whole viewport its atmosphere
+ *  - a sparse set of slightly larger dust particles that stay put until the
+ *    cursor passes near them, then ease back to rest. No continuous
+ *    animation loop — rAF only runs while particles are still settling.
  */
 export default function GrainField() {
   const canvasRef = useRef(null)
@@ -28,12 +52,13 @@ export default function GrainField() {
     let width = 0
     let height = 0
     let particles = []
+    let pattern = null
     let mouse = { x: -9999, y: -9999 }
     let raf = null
 
     const makeParticles = () => {
       const area = window.innerWidth * window.innerHeight
-      const count = Math.round(area / DENSITY)
+      const count = Math.round(area / DUST_DENSITY)
       particles = new Array(count).fill(0).map(() => {
         const isPink = Math.random() < 0.78
         const [r, g, b] = isPink ? PINK : GRAY
@@ -42,8 +67,8 @@ export default function GrainField() {
           oy: Math.random() * window.innerHeight,
           dx: 0,
           dy: 0,
-          r: Math.random() * 0.6 + 0.3,
-          a: isPink ? Math.random() * 0.05 + 0.02 : Math.random() * 0.03 + 0.012,
+          r: Math.random() * 0.7 + 0.4,
+          a: isPink ? Math.random() * 0.1 + 0.05 : Math.random() * 0.06 + 0.03,
           color: `${r},${g},${b}`,
         }
       })
@@ -58,6 +83,7 @@ export default function GrainField() {
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      pattern = ctx.createPattern(buildGrainTile(), 'repeat')
       makeParticles()
       draw()
     }
@@ -65,6 +91,10 @@ export default function GrainField() {
     const draw = () => {
       ctx.fillStyle = BG
       ctx.fillRect(0, 0, width, height)
+      if (pattern) {
+        ctx.fillStyle = pattern
+        ctx.fillRect(0, 0, width, height)
+      }
       for (const p of particles) {
         ctx.beginPath()
         ctx.fillStyle = `rgba(${p.color},${p.a})`
