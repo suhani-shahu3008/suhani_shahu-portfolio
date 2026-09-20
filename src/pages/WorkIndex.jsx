@@ -2,6 +2,7 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import SiteRail from '../components/SiteRail'
 import IndexRail from '../components/IndexRail'
+import GrainField from '../components/GrainField'
 
 const INDEX_ITEMS = [
   { num: '02', label: 'Case Study 1' },
@@ -23,6 +24,7 @@ const RAIL_SECTIONS = [
 export default function WorkIndex() {
   return (
     <>
+      <GrainField />
       <SiteNav />
       <SiteRail sections={RAIL_SECTIONS} />
       <div id="wi-top" className="page-footer-anchor">
