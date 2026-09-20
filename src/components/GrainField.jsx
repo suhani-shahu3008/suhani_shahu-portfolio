@@ -59,7 +59,7 @@ export default function GrainField() {
             dx: 0,
             dy: 0,
             r: Math.random() * (RADIUS_MAX - RADIUS_MIN) + RADIUS_MIN,
-            a: Math.random() * 0.2 + 0.22,
+            a: Math.random() * 0.18 + 0.2,
             color: `${r},${g},${b}`,
           })
         }
