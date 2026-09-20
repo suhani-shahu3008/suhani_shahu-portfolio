@@ -6,17 +6,17 @@ const PINK_MUTED = [205, 150, 163]
 const PINK_BRIGHT = [233, 143, 165] // #E98FA5
 const GLOW_PINK = '233, 143, 165'
 
-const CELL = 20 // px — jittered-grid cell size for organic, gap-free density
-const CURSOR_RADIUS = 130
-const BASE_PUSH = 8
-const MAX_PUSH_SCALE = 2.4
-const EASE = 0.1
+const CELL = 18 // px — jittered-grid cell size for organic, gap-free density
+const CURSOR_RADIUS = 150
+const BASE_PUSH = 14
+const MAX_PUSH_SCALE = 2.2
+const EASE = 0.09
 const SETTLE_EPSILON = 0.02
 
 function pickColor() {
   const roll = Math.random()
-  if (roll < 0.22) return GRAY
-  if (roll < 0.62) return PINK_MUTED
+  if (roll < 0.4) return GRAY
+  if (roll < 0.85) return PINK_MUTED
   return PINK_BRIGHT
 }
 
@@ -55,14 +55,18 @@ export default function GrainField() {
           const extra = roll > 0.94 ? 1 : 0 // occasional denser clump
           for (let n = 0; n <= extra; n++) {
             const [r, g, b] = pickColor()
-            const bright = Math.random() < 0.08
+            // most grains ~2px, some ~3px, a few ~4px (visual diameter)
+            const sizeRoll = Math.random()
+            const radius = sizeRoll < 0.55 ? Math.random() * 0.3 + 0.9
+              : sizeRoll < 0.88 ? Math.random() * 0.35 + 1.3
+              : Math.random() * 0.4 + 1.7
             list.push({
               ox: cx * CELL + Math.random() * CELL,
               oy: cy * CELL + Math.random() * CELL,
               dx: 0,
               dy: 0,
-              r: Math.random() * 0.45 + 0.28,
-              a: bright ? Math.random() * 0.05 + 0.35 : Math.random() * 0.22 + 0.08,
+              r: radius,
+              a: Math.random() * 0.3 + 0.15,
               color: `${r},${g},${b}`,
             })
           }
