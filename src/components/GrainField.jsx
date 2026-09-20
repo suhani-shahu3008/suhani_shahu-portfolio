@@ -11,9 +11,9 @@ const MAUVE = [210, 140, 160] // brightened #B4778A
 const SPACING = 38 // px — grid pitch, both axes
 const RADIUS_MIN = 1.2
 const RADIUS_MAX = 1.9
-const CURSOR_RADIUS = 140
-const MAX_PUSH = 18
-const MAX_PUSH_SCALE = 1.6
+const CURSOR_RADIUS = 175
+const MAX_PUSH = 28
+const MAX_PUSH_SCALE = 1.7
 const EASE = 0.1
 const SETTLE_EPSILON = 0.02
 
@@ -59,7 +59,7 @@ export default function GrainField() {
             dx: 0,
             dy: 0,
             r: Math.random() * (RADIUS_MAX - RADIUS_MIN) + RADIUS_MIN,
-            a: Math.random() * 0.25 + 0.35,
+            a: Math.random() * 0.2 + 0.22,
             color: `${r},${g},${b}`,
           })
         }
