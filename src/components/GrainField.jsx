@@ -84,16 +84,6 @@ export default function GrainField() {
       ctx.fillStyle = BG
       ctx.fillRect(0, 0, width, height)
 
-      if (mouse.x > -1000) {
-        const glowRadius = CURSOR_RADIUS * 1.4
-        const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, glowRadius)
-        glow.addColorStop(0, 'rgba(233,143,165,0.12)')
-        glow.addColorStop(0.6, 'rgba(233,143,165,0.05)')
-        glow.addColorStop(1, 'rgba(233,143,165,0)')
-        ctx.fillStyle = glow
-        ctx.fillRect(0, 0, width, height)
-      }
-
       for (const p of particles) {
         ctx.beginPath()
         ctx.fillStyle = `rgba(${p.color},${p.a})`
