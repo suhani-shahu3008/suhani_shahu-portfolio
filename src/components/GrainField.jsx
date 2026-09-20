@@ -11,9 +11,9 @@ const MAUVE = [210, 140, 160] // brightened #B4778A
 const SPACING = 38 // px — grid pitch, both axes
 const RADIUS_MIN = 1.2
 const RADIUS_MAX = 1.9
-const CURSOR_RADIUS = 175
-const MAX_PUSH = 28
-const MAX_PUSH_SCALE = 1.7
+const CURSOR_RADIUS = 240
+const MAX_PUSH = 48
+const MAX_PUSH_SCALE = 1.9
 const EASE = 0.1
 const SETTLE_EPSILON = 0.02
 
