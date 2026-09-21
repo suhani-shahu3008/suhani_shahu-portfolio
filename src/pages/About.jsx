@@ -3,6 +3,7 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import SiteRail from '../components/SiteRail'
 import IndexRail from '../components/IndexRail'
+import GrainField from '../components/GrainField'
 
 const INDEX_ITEMS = [
   { num: '02', label: 'My Story / About Me' },
@@ -45,6 +46,7 @@ export default function About() {
 
   return (
     <>
+      <GrainField />
       <SiteNav />
       <SiteRail sections={RAIL_SECTIONS} />
       <div className="about-hero" id="about-hero" ref={heroRef}>

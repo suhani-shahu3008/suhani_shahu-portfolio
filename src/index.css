@@ -110,9 +110,22 @@ body,
   }
 }
 
+/* ---------- Get in Touch: fixed full-viewport dust-grain backdrop ----------
+   Canvas painted by GrainField.jsx — deep charcoal + sparse pink/gray grain
+   that eases away from the cursor and settles back. Fixed positioning keeps
+   it behind the page as it scrolls, sitting under the nav/hero/footer. ---- */
+
+.grain-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ---------- Page stubs ---------- */
 
 .page-stub {
+  position: relative;
   min-height: 100vh;
   display: grid;
   place-items: center;

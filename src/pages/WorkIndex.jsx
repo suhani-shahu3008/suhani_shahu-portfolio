@@ -3,6 +3,7 @@ import SiteFooter from '../components/SiteFooter'
 import SiteRail from '../components/SiteRail'
 import ContactForm from '../components/ContactForm'
 import Button from '../components/Button'
+import GrainField from '../components/GrainField'
 
 function ArrowIcon() {
   return (
@@ -119,6 +120,7 @@ function SplitProject({ project }) {
 export default function WorkIndex() {
   return (
     <>
+      <GrainField />
       <SiteNav />
       <SiteRail sections={RAIL_SECTIONS} />
 
