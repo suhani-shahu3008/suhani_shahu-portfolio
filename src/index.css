@@ -139,6 +139,49 @@ body,
   text-shadow: 0 0 60px rgba(247, 201, 217, 0.18);
 }
 
+/* ---------- Get in Touch hero: copy left, companion right ---------- */
+
+.gt-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  text-align: left;
+  place-items: center stretch;
+}
+
+.gt-hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.gt-hero__companion-canvas {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 52vh, 620px);
+  pointer-events: none;
+}
+
+.gt-hero__companion-canvas canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .gt-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .gt-hero__copy {
+    align-items: center;
+  }
+  .gt-hero__companion-canvas {
+    height: clamp(240px, 40vh, 420px);
+  }
+}
+
 /* ---------- Top nav bar (Case Studies / About / Contact pages) ----------
    Exact port of `.nav` from public/landing-pages/suhanishahu-portfolio.html
    (Home's own nav) — same classes, same values, scoped to this component via
@@ -1567,4 +1610,201 @@ body,
   color: #f6b8d1;
   filter: drop-shadow(0 4px 16px rgba(246, 184, 209, .35));
   text-decoration: none;
+}
+
+/* ---------- Case Studies page ---------- */
+
+.cs-header {
+  padding: clamp(150px, 22vh, 210px) 0 clamp(40px, 6vh, 64px);
+  max-width: 720px;
+}
+
+.cs-header__title {
+  margin: 0;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  font-size: clamp(44px, 6.4vw, 92px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: .98;
+  color: var(--text-main);
+  text-shadow: 0 0 60px rgba(247, 201, 217, 0.18);
+}
+
+.cs-header__lede {
+  margin: 20px 0 0;
+  max-width: 46ch;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.cs-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 9vh, 120px);
+  padding-bottom: clamp(60px, 9vh, 120px);
+}
+
+.cs-section { width: 100%; }
+
+/* per-project meta row — same dot/number/rule treatment as .idx-rail's
+   rows (and the section labels ported from Home), scoped locally like
+   .nav/.foot/.rail rather than nested under .idx-rail itself */
+.cs-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 20px;
+}
+
+.cs-meta-row .dot {
+  position: relative;
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--pink-glow);
+  box-shadow: 0 0 10px var(--pink-glow);
+}
+
+.cs-meta-row .dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--pink-glow);
+  animation: dotPing 1.8s cubic-bezier(0, 0, .2, 1) infinite;
+}
+
+.cs-meta-row .k {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.cs-meta-row .k b { color: var(--pink-glow); font-weight: 500; }
+
+.cs-meta-row .rule { flex: 1 1 auto; height: 1px; background: rgba(245, 238, 220, .07); }
+
+/* shared glass container — never opaque, environment stays subtly visible.
+   Hover/press/media treatment matches Home's Selected Work grid (.work-fr)
+   exactly: border and shadow lift on hover, a soft press scale, and the
+   image itself starts slightly zoomed in and settles to its true size. */
+.cs-card {
+  position: relative;
+  background: rgba(6, 8, 11, .5);
+  border: 1px solid var(--pink-tint);
+  border-radius: 32px;
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .6);
+  overflow: hidden;
+  transition: border-color .5s cubic-bezier(.22, .61, .36, 1),
+    background .5s cubic-bezier(.22, .61, .36, 1),
+    transform .25s cubic-bezier(.16, 1, .3, 1),
+    box-shadow .5s cubic-bezier(.22, .61, .36, 1);
+}
+
+.cs-card:hover, .cs-card:focus-within {
+  border-color: rgba(246, 184, 209, .55);
+  box-shadow: 0 0 0 1px rgba(246, 184, 209, .12), 0 24px 60px -24px rgba(0, 0, 0, .6);
+}
+
+.cs-card:active {
+  transform: scale(.99);
+  background: rgba(6, 8, 11, .72);
+}
+
+/* two-column: image on one side, project info on the other. DOM order
+   decides left/right — SplitProject swaps children for the mirrored layout,
+   so no separate CSS reverse rule is needed. */
+.cs-card--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  min-height: clamp(380px, 42vw, 560px);
+}
+
+.cs-media {
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+}
+
+.cs-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.08);
+  transform-origin: center;
+  transition: transform .6s cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+
+.cs-card:hover .cs-media img, .cs-card:focus-within .cs-media img { transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-card, .cs-media img { transition: none; }
+}
+
+.cs-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(32px, 4vw, 64px);
+}
+
+.cs-info__title {
+  margin: 0;
+  font-size: clamp(24px, 2.6vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: var(--text-main);
+}
+
+.cs-info__desc {
+  margin: 12px 0 0;
+  max-width: none;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+.cs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+
+.cs-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--pink-tint);
+  background: rgba(255, 255, 255, .02);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.cs-info__cta { margin-top: 56px; }
+
+@media (max-width: 860px) {
+  .cs-card--split {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .cs-media { min-height: 300px; order: -1; }
+  .cs-info { padding: 32px 28px; }
 }

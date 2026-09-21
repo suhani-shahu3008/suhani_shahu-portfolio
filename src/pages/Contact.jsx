@@ -2,6 +2,7 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import SiteRail from '../components/SiteRail'
 import ContactForm from '../components/ContactForm'
+import ContactCompanion from '../components/ContactCompanion'
 import IndexRail from '../components/IndexRail'
 
 const INDEX_ITEMS = [
@@ -24,9 +25,12 @@ export default function Contact() {
       <SiteNav />
       <SiteRail sections={RAIL_SECTIONS} />
 
-      <section id="gt-hero" className="page-stub">
-        <p className="page-stub__eyebrow">04 · GET IN TOUCH</p>
-        <h1 className="page-stub__title">Get in Touch</h1>
+      <section id="gt-hero" className="page-stub gt-hero">
+        <div className="gt-hero__copy">
+          <p className="page-stub__eyebrow">04 · GET IN TOUCH</p>
+          <h1 className="page-stub__title">Get in Touch</h1>
+        </div>
+        <ContactCompanion />
       </section>
 
       <section id="gt-contact-info" className="contact-info">
