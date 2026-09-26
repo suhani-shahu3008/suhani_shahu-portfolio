@@ -7,7 +7,6 @@ const AUTOPLAY_MS = 1100
 export default function CaseStudiesFeatured({ projects }) {
   const outerRef = useRef(null)
   const stageRef = useRef(null)
-  const captionRef = useRef(null)
   const featured = projects.slice(0, 4)
 
   useEffect(() => {
@@ -40,7 +39,6 @@ export default function CaseStudiesFeatured({ projects }) {
       stage.style.setProperty('--p', 0)
       stage.style.setProperty('--scale', 1)
       stage.style.setProperty('--dim', 0.5)
-      stage.style.setProperty('--cap-op', 1)
       return
     }
 
@@ -77,7 +75,6 @@ export default function CaseStudiesFeatured({ projects }) {
       stage.style.setProperty('--p', p)
       stage.style.setProperty('--scale', scale)
       stage.style.setProperty('--dim', 0.35 + p * 0.55)
-      stage.style.setProperty('--cap-op', p > 0.02 && p < 0.98 ? 1 : 0)
     }
 
     // Batch to one update per animation frame — writing styles straight off
@@ -101,7 +98,6 @@ export default function CaseStudiesFeatured({ projects }) {
   // Autoplay image cycle — runs on its own clock, independent of scroll.
   useEffect(() => {
     const stage = stageRef.current
-    const caption = captionRef.current
     if (!stage) return
 
     const setActive = (idx) => {
@@ -109,7 +105,6 @@ export default function CaseStudiesFeatured({ projects }) {
         stage.style.setProperty(`--o${i + 1}`, i === idx ? 1 : 0)
       })
       stage.dataset.active = String(idx)
-      if (caption) caption.textContent = featured[idx].title
     }
 
     setActive(0)
@@ -145,12 +140,6 @@ export default function CaseStudiesFeatured({ projects }) {
               <img src={p.image} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
             </div>
           ))}
-        </div>
-        <div className="cs-featured__caption" aria-hidden="true">
-          <span className="dot" />
-          <span className="k">
-            Now Showing — <b ref={captionRef}>{featured[0].title}</b>
-          </span>
         </div>
       </div>
     </section>
