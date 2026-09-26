@@ -840,12 +840,17 @@ body,
 }
 
 /* ---------- Site footer (Case Studies / About / Contact pages) ----------
-   Exact port of `.foot` (data-layout-footer="b" variant) from
+   Port of `.foot` (data-layout-footer="b" variant) from
    public/landing-pages/suhanishahu-portfolio.html — same classes, same
-   values, scoped via custom properties on `.foot` itself like `.nav`. The
-   `.fg` decorative foreground images are not ported: they're driven by the
-   3D/camera system that only exists inside the Kage iframe. Do not restyle;
-   keep this in lockstep with the source. */
+   markup, same typography/spacing values, scoped via custom properties on
+   `.foot` itself like `.nav`. Home's own footer has no glass panel of its
+   own — it reads as atmospheric because it sits directly on the live 3D
+   scene (fog, vignette, depth). These pages have no 3D scene behind them,
+   only GrainField's flat dot pattern, so `.foot::before` adds a liquid-glass
+   panel (same material language as `.cf-card`/`.nav`) to blur that pattern
+   into soft atmosphere instead of showing it sharply through bare text.
+   The `.fg` decorative foreground images are not ported: they're driven by
+   the 3D/camera system that only exists inside the Kage iframe. */
 
 .foot {
   --bone: #dfe7e0;
@@ -857,6 +862,7 @@ body,
   --pad: clamp(20px, 3.4vw, 56px);
 
   position: relative;
+  isolation: isolate;
   /* .app-main adds 48px of horizontal padding that Home's footer (full-bleed
      inside the iframe) never has — cancel it so --pad resolves against the
      same full viewport width on both, same trick as .about-hero uses */
@@ -872,9 +878,11 @@ body,
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(20, 9, 17, .4), rgba(9, 6, 10, .6) 55%, rgba(7, 5, 8, .72));
-  backdrop-filter: blur(26px) saturate(140%);
-  -webkit-backdrop-filter: blur(26px) saturate(140%);
+  background:
+    radial-gradient(90% 60% at 50% 0%, rgba(255, 180, 215, .05), transparent 60%),
+    linear-gradient(180deg, rgba(20, 9, 17, .42), rgba(9, 6, 10, .62) 55%, rgba(7, 5, 8, .76));
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
 }
 
 .foot-grid, .foot-base { position: relative; }
@@ -1627,13 +1635,14 @@ body,
 
 /* ---------- Case Studies page ---------- */
 
-.cs-header {
-  padding: clamp(150px, 22vh, 210px) 0 clamp(40px, 6vh, 64px);
+.cs-hero {
+  position: relative;
+  padding: clamp(150px, 22vh, 210px) 0 clamp(64px, 9vh, 96px);
   max-width: 720px;
 }
 
-.cs-header__title {
-  margin: 0;
+.cs-hero__title {
+  margin: 20px 0 0;
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
   font-size: clamp(44px, 6.4vw, 92px);
   font-weight: 600;
@@ -1643,18 +1652,76 @@ body,
   text-shadow: 0 0 60px rgba(247, 201, 217, 0.18);
 }
 
-.cs-header__lede {
+.cs-hero__lede {
   margin: 20px 0 0;
   max-width: 46ch;
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+.cs-hero__lede--dim {
+  margin-top: 10px;
   font-size: clamp(15px, 1.4vw, 18px);
   line-height: 1.6;
   color: var(--text-dim);
+}
+
+.cs-hero__cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(40px, 6vh, 64px);
+  width: fit-content;
+}
+
+.cs-hero__cue .k {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.cs-hero__cue-rule {
+  position: relative;
+  width: 1px;
+  height: 40px;
+  background: rgba(245, 238, 220, .12);
+}
+
+.cs-hero__cue-dot {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--pink-glow);
+  box-shadow: 0 0 10px var(--pink-glow);
+  animation: csHeroCueTravel 2.2s cubic-bezier(.45, 0, .2, 1) infinite;
+}
+
+@keyframes csHeroCueTravel {
+  0% { top: 0; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-hero__cue-dot { animation: none; top: 50%; opacity: 1; }
 }
 
 .cs-list {
   display: flex;
   flex-direction: column;
   gap: clamp(64px, 9vh, 120px);
+  padding-top: clamp(72px, 10vh, 140px);
   padding-bottom: clamp(60px, 9vh, 120px);
 }
 
@@ -1664,10 +1731,11 @@ body,
    rows (and the section labels ported from Home), scoped locally like
    .nav/.foot/.rail rather than nested under .idx-rail itself */
 .cs-meta-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 0 0 20px;
+  margin: 0 0 32px;
 }
 
 .cs-meta-row .dot {
@@ -1820,4 +1888,150 @@ body,
   }
   .cs-media { min-height: 300px; order: -1; }
   .cs-info { padding: 32px 28px; }
+}
+
+/* ---------- Case Studies: pinned scroll-driven featured reel ---------- */
+
+.cs-featured {
+  position: relative;
+  height: 400vh;
+  margin-left: -48px;
+  margin-right: -48px;
+  width: calc(100% + 96px);
+}
+
+/* position + top are set inline by JS (fixed while pinned, absolute at the
+   start/end of the 400vh track) — see CaseStudiesFeatured.jsx for why
+   position:sticky doesn't work in this app. */
+.cs-featured__stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg-void);
+}
+
+.cs-featured__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-void);
+  opacity: var(--dim, .35);
+  pointer-events: none;
+}
+
+.cs-featured__viz {
+  position: relative;
+  width: min(58vw, 780px);
+  aspect-ratio: 16 / 10;
+  transform: scale(var(--scale, .42));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.cs-featured__slot {
+  position: absolute;
+  inset: 0;
+  opacity: var(--op, 0);
+  border-radius: 32px;
+  border: 1px solid var(--pink-tint);
+  background: rgba(6, 8, 11, .5);
+  overflow: hidden;
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .6);
+  transition: opacity .6s cubic-bezier(.22, .61, .36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-featured__slot { transition: none; }
+}
+
+.cs-featured__slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cs-featured__caption {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: var(--cap-op, 0);
+  transition: opacity .4s ease;
+}
+
+.cs-featured__caption .dot {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--pink-glow);
+  box-shadow: 0 0 10px var(--pink-glow);
+}
+
+.cs-featured__caption .k {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.cs-featured__caption .k b { color: var(--pink-glow); font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-featured {
+    height: auto;
+  }
+  .cs-featured__stage {
+    position: relative;
+    height: 70vh;
+  }
+  .cs-featured__viz {
+    transform: scale(1);
+    will-change: auto;
+  }
+  .cs-featured__caption {
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .cs-featured {
+    margin-left: -24px;
+    margin-right: -24px;
+    width: calc(100% + 48px);
+  }
+}
+
+@media (max-width: 860px) {
+  .cs-featured {
+    height: 260vh;
+  }
+  .cs-featured__viz {
+    width: min(85vw, 520px);
+  }
+  .cs-featured__caption {
+    width: min(88vw, 480px);
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+  }
+  .cs-featured__caption .k {
+    white-space: normal;
+  }
 }

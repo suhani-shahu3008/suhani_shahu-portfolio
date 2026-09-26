@@ -1,9 +1,9 @@
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import SiteRail from '../components/SiteRail'
-import ContactForm from '../components/ContactForm'
 import Button from '../components/Button'
 import GrainField from '../components/GrainField'
+import CaseStudiesFeatured from '../components/CaseStudiesFeatured'
 
 function ArrowIcon() {
   return (
@@ -58,11 +58,11 @@ const PROJECTS = [
 
 const RAIL_SECTIONS = [
   { label: 'The Hero Section', id: 'cs-header' },
+  { label: 'Featured Reel', id: 'cs-featured' },
   { label: PROJECTS[0].title, id: PROJECTS[0].id },
   { label: PROJECTS[1].title, id: PROJECTS[1].id },
   { label: PROJECTS[2].title, id: PROJECTS[2].id },
   { label: PROJECTS[3].title, id: PROJECTS[3].id },
-  { label: 'Get in Touch', id: 'cs-contact' },
   { label: 'The Footer', id: 'site-footer' },
 ]
 
@@ -124,27 +124,24 @@ export default function WorkIndex() {
       <SiteNav />
       <SiteRail sections={RAIL_SECTIONS} />
 
-      <header id="cs-header" className="cs-header">
-        <h1 className="cs-header__title">Case Studies</h1>
-        <p className="cs-header__lede">A closer look at four projects — how each one was framed, designed, and shipped.</p>
+      <header id="cs-header" className="cs-hero">
+        <CaseMeta num="04" label="Featured Work" />
+        <h1 className="cs-hero__title">Case Studies</h1>
+        <p className="cs-hero__lede">Four projects. One immersive frame.</p>
+        <p className="cs-hero__lede cs-hero__lede--dim">A closer look at four projects — how each one was framed, designed, and shipped.</p>
+        <div className="cs-hero__cue" aria-hidden="true">
+          <span className="k">Scroll to explore</span>
+          <span className="cs-hero__cue-rule">
+            <span className="cs-hero__cue-dot" />
+          </span>
+        </div>
       </header>
+
+      <CaseStudiesFeatured projects={PROJECTS} />
 
       <div className="cs-list">
         {PROJECTS.map((project) => <SplitProject project={project} key={project.id} />)}
       </div>
-
-      <section id="cs-contact" className="gt-section">
-        <CaseMeta num="05" label="Get in Touch" />
-        <div className="gt-grid">
-          <div className="gt-copy">
-            <h2 className="gt-title">Let's Connect</h2>
-            <p className="gt-lede">
-              Liked what you saw? I'm currently looking for internship opportunities and would love to connect.
-            </p>
-          </div>
-          <ContactForm />
-        </div>
-      </section>
 
       <SiteFooter />
     </>
